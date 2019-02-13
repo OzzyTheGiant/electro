@@ -1,17 +1,19 @@
 <template>
 	<div id="app">
-		<img alt="Vue logo" src="./assets/logo.png">
-		<HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+		<nav></nav>
+		<div id="module-container" class="columns is-centered">
+			<login/>
+		</div>
   	</div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
+import Login from "./components/Login.vue";
 
 @Component({
   	components: {
-    	HelloWorld
+    	login:Login
   	}
 })
 export default class App extends Vue {
@@ -20,12 +22,22 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-#app {
-  	font-family: "Avenir", Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
+	@import "./sass/main";
+
+	#app {
+		height:100%;
+		display:flex;
+		flex-direction:column;
+	}
+
+	nav {
+		flex-grow:0;
+		height:3rem;
+	}
+
+	#module-container {
+		padding:1rem 0.5rem;
+		align-items:center;
+		flex-grow:1;
+	}
 </style>
