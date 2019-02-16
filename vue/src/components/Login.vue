@@ -1,5 +1,5 @@
 <template>
-	<form autocomplete="off" class="column is-half">
+	<form autocomplete="off" class="column is-half" @submit.prevent="submitForm">
 		<h1>Electro</h1>
 		<field name="login-username" type="text" placeholder="Username" v-model="credentials.username"/>
 		<field name="login-password" type="password" placeholder="Password" v-model="credentials.password"/>

@@ -6,13 +6,17 @@ $input-color:$label-color;
 $input-hover-border-color:$color-main;
 $input-focus-border-color:$color-main;
 $input-focus-box-shadow-color:rgba($color-main, 0.25);
+$button-border-color:transparent;
+$button-border-width:0px;
 
+// TODO: breakdown bulma into only the essential modules needed
 @import "../../../node_modules/bulma/bulma.sass";
 
 $color-background:$body-background-color;
 $color-card:#1C2229;
 $color-field:#111;
 $default-shadow:0px 4px 6px -2px #000;
+$container-padding:1rem 0.5rem;
 
 body {
 	color:#FFF;
