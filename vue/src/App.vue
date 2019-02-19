@@ -1,17 +1,17 @@
 <template>
 	<div id="app">
-		<nav v-if="inSession">
-			<div class="container is-fullhd">
+		<nav v-if="inSession" role="navigation" aria-label="main-navigation">
+			<div class="container columns is-fullhd is-vcentered">
 				<h1>Electro</h1>
 				<ul>
 					<li><a class="link" @click.prevent="onClickLogoutButton">Log Out</a></li>
 				</ul>
 			</div>
 		</nav>
-		<div id="module-container" class="columns is-centered">
+		<main id="module-container">
 			<login v-if="!inSession" @login="onLoginFormSubmit"/>
 			<dashboard v-else/>
-		</div>
+		</main>
   	</div>
 </template>
 
@@ -55,10 +55,10 @@ export default class App extends Vue {
 	nav {
 		flex-grow:0;
 		height:3rem;
+		background-color:$color-card;
 		.container {
-			padding:0 0.5rem;;
+			padding:0 0.75rem;;
 			justify-content:space-between;
-			align-items:center;
 		}
 		a {
 			color:$color-main;
@@ -70,5 +70,6 @@ export default class App extends Vue {
 		padding:$container-padding;
 		align-items:center;
 		flex-grow:1;
+		> .columns {width:100%; height:100%;}
 	}
 </style>
