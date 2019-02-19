@@ -1,6 +1,6 @@
 /* === BULMA OVERRIDES === */
 $color-main:#FFDD57;
-$body-background-color:#282e38;
+$body-background-color:#39424c;
 $label-color:#FFF;
 $input-color:$label-color;
 $input-hover-border-color:$color-main;
@@ -16,7 +16,7 @@ $color-background:$body-background-color;
 $color-card:#1C2229;
 $color-field:#111;
 $default-shadow:0px 4px 6px -2px #000;
-$container-padding:1rem 0.5rem;
+$container-padding:1rem 0.75rem;
 
 body {
 	color:#FFF;
@@ -44,5 +44,28 @@ input:not([type="submit"]), textarea {
 	background-color:$color-card;
 	box-shadow:$default-shadow;
 	padding:1.25rem 1rem;
-	h1, h2, h3, h4, h5, h6 {margin-top:0;}
+	h1, h2, h3, h4, h5, h6 {margin-bottom:1rem;}
+	h2 {font-size:1.5rem;}
 }
+
+/* === v-calendar style overrides === */
+.c-pane, // calendar container 
+.c-table-cell, // month picker boxes
+.c-header, // year and month display header
+.popover-origin .popover-content-wrapper .popover-content, // a container for the c-pane in calendar
+.popover-origin .popover-content-wrapper .popover-content.align-left:after, // triangle pointer on top
+.popover-origin .popover-content-wrapper .popover-content.align-center:after { 
+	background-color:$color-background !important;
+	color:$label-color;
+}
+
+.c-table-cell:hover:not(.c-active), .c-active { // month-picker-boxes
+	background-color:$color-card !important;
+}
+
+.popover-origin .popover-content-wrapper .popover-content { 
+	border: 1px solid $color-card !important;
+}
+
+.c-weekdays {color:#BBB;}
+.c-pane-container {color:$label-color !important} // month, date numbers
