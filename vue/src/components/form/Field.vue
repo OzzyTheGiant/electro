@@ -1,6 +1,10 @@
 <template>
-	<div class="field">
-		<label :for="name" class="label">{{ labelText || placeholder }}</label>
+	<div class="field" :class="{'is-horizontal':horizontal}">
+		<!-- create horizontal field with label on left side, else make standard label above field -->
+		<div v-if="horizontal" class="field-label is-normal">
+			<label class="label">{{ labelText || placeholder }}</label>
+		</div>
+		<label v-else :for="name" class="label" :class="{'is-normal':horizontal}">{{ labelText || placeholder }}</label>
 		<div class="control" v-if="type !== 'textarea'">
 			<!-- currency field, made with v-money -->
 			<input v-if="type === 'currency'" v-money="currencySettings" :id="name" type="text" class="input" placeholder="$0.00" :value="value" @input="updateValue"/>
@@ -26,6 +30,7 @@ export default class Field extends Vue {
 	@Prop({default:"text"}) public type!:string;
 	@Prop({default:""}) public placeholder!:string;
 	@Prop() public labelText!:string;
+	@Prop({default:false}) public horizontal!:boolean;
 
 	public currencySettings = {prefix:"$"} // for use with currency field by v-money
 
