@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<nav v-if="inSession" role="navigation" aria-label="main-navigation">
-			<div class="container columns is-fullhd is-vcentered">
+			<div class="container columns is-fullhd is-vcentered is-marginless">
 				<h1>Electro</h1>
 				<ul>
 					<li><a class="link" @click.prevent="onClickLogoutButton">Log Out</a></li>

@@ -1,13 +1,15 @@
 <template>
-	<div class="columns is-centered is-vcentered">
-		<form autocomplete="off" class="column is-half" @submit.prevent="submitForm">
-			<h1>Electro</h1>
-			<field name="login-username" type="text" placeholder="Username" v-model="credentials.username"/>
-			<field name="login-password" type="password" placeholder="Password" v-model="credentials.password"/>
-			<div class="field">
-				<div class="control"><button type="submit" class="button">Log In</button></div>
-			</div>
-		</form>
+	<div class="columns is-centered is-vcentered is-marginless">
+		<div class="column is-half">
+			<form class="widget" autocomplete="off" @submit.prevent="submitForm">
+				<h1>Electro</h1>
+				<field name="login-username" type="text" placeholder="Username" v-model="credentials.username"/>
+				<field name="login-password" type="password" placeholder="Password" v-model="credentials.password"/>
+				<div class="field">
+					<div class="control"><button type="submit" class="button">Log In</button></div>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
 
@@ -33,7 +35,7 @@ export default class Login extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-	form {
+	.column {
 		max-width:500px;
 		height:305px;
 	}
