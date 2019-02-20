@@ -8,6 +8,8 @@ $input-focus-border-color:$color-main;
 $input-focus-box-shadow-color:rgba($color-main, 0.25);
 $button-border-color:transparent;
 $button-border-width:0px;
+$column-gap:0.5rem;
+$variable-columns:false;
 
 // TODO: breakdown bulma into only the essential modules needed
 @import "../../../node_modules/bulma/bulma.sass";
@@ -38,13 +40,21 @@ input:not([type="submit"]), textarea {
 	&:hover {background-color:tint($color-main, 50%)}
 }
 
-.columns, .columns:last-child {margin:0;} // bulma override
+.column {	
+	&:first-child {padding-left:0;}
+	&:last-child {padding-right:0;}
+	@media screen and (max-width:768px) {
+		padding-left:0;
+		padding-right:0;
+	}
+}
 
-.column {
+.widget {
 	background-color:$color-card;
 	box-shadow:$default-shadow;
 	padding:1.25rem 1rem;
 	h1, h2, h3, h4, h5, h6 {margin-bottom:1rem;}
+	.level { h1, h2, h3, h4, h5, h6 {margin-bottom:0;}}
 	h2 {font-size:1.5rem;}
 }
 
