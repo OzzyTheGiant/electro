@@ -33,10 +33,10 @@ export default class Field extends Vue {
 	@Prop({default:false}) public horizontal!:boolean;
 	@Prop({default:100}) public length!:number;
 
-	public currencySettings = {prefix:"$"} // for use with currency field by v-money
+	public currencySettings = {prefix:"$"}; // for use with currency field by v-money
 
 	public updateValue(event:any):void {
-		this.$emit('input', event.target.value); 
+		this.$emit('input', event.target.value);
 	}
 }
 </script>

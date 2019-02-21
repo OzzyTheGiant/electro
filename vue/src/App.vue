@@ -22,14 +22,14 @@ import Login from "./components/Login.vue";
 import DashBoard from "./components/DashBoard.vue";
 
 @Component({
-  	components: {
+	components: {
 		login:Login, dashboard:DashBoard
-  	}
+	}
 })
 export default class App extends Vue {
 	private http:HttpService = new HttpService();
 	private inSession:boolean = false;
-	
+
 	// TODO: implement true Http session login/logout services later
 	public onLoginFormSubmit(credentials:any):void {
 		if (this.http.login(credentials)) this.inSession = true;

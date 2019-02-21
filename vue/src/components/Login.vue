@@ -21,9 +21,9 @@ import Field from "./form/Field.vue";
 	components:{field:Field}
 })
 export default class Login extends Vue {
-  	public credentials = {
-    	username: null,
-    	password: null
+	public credentials = {
+		username: null,
+		password: null
 	};
 
 	@Emit()

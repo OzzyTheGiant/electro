@@ -17,7 +17,7 @@ import BillViewer from "./BillViewer.vue";
 	}
 })
 export default class DashBoard extends Vue {
-	
+
 }
 </script>
 
