@@ -1,12 +1,12 @@
 <template>
 	<table class="table">
 		<thead>
-			<tr><th>Bill Date</th><th>Bill Amount</th><th>Actions</th></tr>
+			<tr><th>Date</th><th>Amount</th><th>Actions</th></tr>
 		</thead>
 		<tbody>
 			<tr v-for="bill of bills" :key="bill.id">
-				<td>{{ bill.paymentDate }}</td>
-				<td>${{ bill.paymentAmount }}</td>
+				<td>{{ bill.paymentDate | shortDate }}</td>
+				<td>${{ bill.paymentAmount | currency }}</td>
 				<td>
 					<div class="field is-grouped">
 						<div class="control">
@@ -25,27 +25,38 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { Bill } from '../../models/Bill';
+import { shortDate, currency } from '../../filters/Filters';
 
-@Component
+@Component({
+	filters:{ shortDate, currency }
+})
 export default class BillTable extends Vue {
-	@Prop() public bills: Bill[] = [
-		{id:1, paymentDate:"2019-01-01", paymentAmount:75.50},
-		{id:1, paymentDate:"2019-02-01", paymentAmount:92.50}
-	];
+	@Prop() public bills!: Bill[];
 
-	@Emit()
-	public onClickUpdateButton(billID:number):void {
-		this.$emit('edit', billID);
+	public created():void {
+		this.bills = [
+			{id:1, paymentDate:"2019-01-01", paymentAmount:1275},
+			{id:2, paymentDate:"2019-02-01", paymentAmount:92.50}
+		];
 	}
 
-	@Emit()
-	public onClickDeleteButton(billID:number):void {
-		this.$emit('delete', billID);
+	@Emit('edit')
+	public onClickUpdateButton(billID:number):number {
+		return billID;
+	}
+
+	@Emit('delete')
+	public onClickDeleteButton(billID:number):number {
+		return billID;
 	}
 }
 </script>
 
 <style scoped>
 	th:last-child {text-align:right}
-	.field.isgrouped {justify-content:flex-end}
+	.field.is-grouped {justify-content:flex-end}
+
+	@media screen and (max-width:330px) {
+		table button .fas {font-size:1rem;}
+	}
 </style>

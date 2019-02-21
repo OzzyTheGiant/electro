@@ -8,7 +8,7 @@
 					<button class="level-right button"><i class="fas fa-chart-line"></i></button>
 				</div>
 			</div>
-			<div></div>
+			<bill-table/>
 			<div></div>
 		</div>
 	</div>
@@ -17,8 +17,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Bill } from "../models/Bill";
+import BillTable from "./bill-viewer/BillTable.vue";
 
-@Component
+
+@Component({
+	components:{ "bill-table":BillTable }
+})
 export default class BillViewer extends Vue {
 	@Prop() public bills!: Bill[];
 
@@ -26,6 +30,13 @@ export default class BillViewer extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	div.level-right {min-width:180px}
+
+	@media screen and (max-width:400px) {
+		.widget {
+			.level h2 {margin-bottom:1rem;}
+			> .level.is-mobile {display:block;}
+		}
+	}
 </style>

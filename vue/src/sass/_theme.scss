@@ -6,6 +6,7 @@ $fa-font-path: "../../node_modules/@fortawesome/fontawesome-free/webfonts"; // f
 
 /* === BULMA OVERRIDES === */
 $color-main:#FFDD57;
+$red:#D41E1E;
 $body-background-color:#39424c;
 $label-color:#FFF;
 $input-color:$label-color;
@@ -75,6 +76,15 @@ input:not([type="submit"]), textarea {
 div.level-right {justify-content:space-between;}
 
 button .fas {font-size:1.25rem;}
+
+.table {
+	width:100%;
+	background-color:$color-background;
+	thead, tbody {
+		td, th {color:#FFF;}
+	}
+	td, th {border-bottom:1px solid $color-card}
+}
 
 /* === v-calendar style overrides === */
 .c-pane, // calendar container 
