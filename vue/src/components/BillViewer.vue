@@ -1,9 +1,12 @@
 <template>
 	<div class="column is-8">
 		<div class="widget">
-			<div class="level">
+			<div class="level is-mobile">
 				<h2 class="level-left">Your Bills</h2>
-				<field v-model="year" class="level-right" name="bv-year" type="text" placeholder="Year" :horizontal="true"/>
+				<div class="level-right level is-marginless is-mobile">
+					<field class="level-left" v-model="year" name="bv-year" type="text" placeholder="Year" :horizontal="true" length="4"/>
+					<button class="level-right button"><i class="fas fa-chart-line"></i></button>
+				</div>
 			</div>
 			<div></div>
 			<div></div>
@@ -23,4 +26,6 @@ export default class BillViewer extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+	div.level-right {min-width:180px}
+</style>

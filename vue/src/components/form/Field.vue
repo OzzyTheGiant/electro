@@ -11,7 +11,7 @@
 			<!-- datepicker field, made with v-calendar -->
 			<input v-else-if="type === 'datepicker'" :id="name" class="input" :value="value"  type="text" placeholder="MM/DD/YYYY"/>
 			<!-- other specified html input field -->
-			<input v-else :id="name" :type="type" class="input" :placeholder="placeholder" :value="value" @input="updateValue"/>
+			<input v-else :id="name" :type="type" class="input" :placeholder="placeholder" :value="value" @input="updateValue" :maxlength="length"/>
 		</div>
 		<div class="control" v-else-if="type === 'textarea'">
 			<textarea :id="name" :placeholder="placeholder" :value="value" @input="updateValue"></textarea>
@@ -31,6 +31,7 @@ export default class Field extends Vue {
 	@Prop({default:""}) public placeholder!:string;
 	@Prop() public labelText!:string;
 	@Prop({default:false}) public horizontal!:boolean;
+	@Prop({default:100}) public length!:number;
 
 	public currencySettings = {prefix:"$"} // for use with currency field by v-money
 
@@ -40,4 +41,6 @@ export default class Field extends Vue {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+	#bv-year {width:60px;} // year field on BillViewer component
+</style>
