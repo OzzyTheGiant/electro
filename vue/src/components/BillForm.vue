@@ -16,12 +16,13 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from "vue-property-decorator";
 import { DatePicker } from 'v-calendar';
+import { Bill } from "../models/Bill";
 
 @Component
 export default class BillForm extends Vue {
 	public formData:any = {
-		paymentAmount: null,
-		paymentDate: null
+		paymentAmount: undefined,
+		paymentDate: undefined
 	};
 
 	public pickerSettings:any = [{
@@ -33,9 +34,9 @@ export default class BillForm extends Vue {
 	get minDate():Date { return new Date(2015, 0, 1); }
 	get maxDate():Date { return new Date(2030, 11, 31); }
 
-	@Emit()
-	public onSubmitBillForm():void {
-		this.$emit("submitBill", this.formData);
+	@Emit("submitBill")
+	public onSubmitBillForm():Bill {
+		return this.formData;
 	}
 }
 </script>

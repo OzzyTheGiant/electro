@@ -22,13 +22,13 @@ import Field from "./form/Field.vue";
 })
 export default class Login extends Vue {
 	public credentials = {
-		username: null,
-		password: null
+		username: undefined,
+		password: undefined
 	};
 
-	@Emit()
-	public submitForm():void {
-		this.$emit("login", this.credentials);
+	@Emit('login')
+	public submitForm():{username?:string, password?:string} {
+		return this.credentials;
 	}
 }
 </script>
