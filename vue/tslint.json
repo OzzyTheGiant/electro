@@ -10,16 +10,17 @@
 	},
 	"rules": {
 		"align":false,
-		"quotemark": false,
+		"arrow-parens":false,
+		"curly":false,
 		"indent": [
 			true,
 			"tabs"
 		],
-		"curly":false,
 		"interface-name": false,
+		"no-consecutive-blank-lines": false,
 		"ordered-imports": false,
 		"object-literal-sort-keys": false,
-		"no-consecutive-blank-lines": false,
+		"quotemark": false,
 		"trailing-comma":false,
 		"typedef-whitespace":false,
 		"whitespace":false
