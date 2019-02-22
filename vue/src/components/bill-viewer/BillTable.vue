@@ -33,13 +33,6 @@ import { shortDate, currency } from '../../filters/Filters';
 export default class BillTable extends Vue {
 	@Prop() public bills!: Bill[];
 
-	public created():void {
-		this.bills = [
-			{id:1, paymentDate:"2019-01-01", paymentAmount:1275},
-			{id:2, paymentDate:"2019-02-01", paymentAmount:92.50}
-		];
-	}
-
 	@Emit('edit')
 	public onClickUpdateButton(billID:number):number {
 		return billID;
