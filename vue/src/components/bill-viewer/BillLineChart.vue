@@ -9,13 +9,13 @@ const initChartData = () => {
 		datasets: [
 			{
 				label: 'Payment Amount',
-				backgroundColor: 'rgba(255,221,87,0.5)',
+				backgroundColor: 'rgba(255,221,87,0.75)',
 				borderColor: '#FFDD57',
 				fill: 'start',
 				lineTension:0,
 				data:[]
 			}
-		]
+		],
 	};
 };
 
@@ -29,7 +29,14 @@ export default class BillLineChart extends Vue<Line> {
 
 	public options:object = {
 		responsive: true,
-		maintainAspectRatio: false
+		maintainAspectRatio: false,
+		legend: {
+			labels: {fontColor:"#FFF"}
+		},
+		scales: {
+			xAxes: [{ gridLines:{color:"#39424C"}, ticks:{fontColor:"#FFF"}}],
+			yAxes: [{ gridLines:{color:"#39424C"}, ticks:{fontColor:"#FFF"}}]
+		}
 	};
 
 	constructor() { super(); }
