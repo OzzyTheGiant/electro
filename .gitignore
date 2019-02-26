@@ -4,6 +4,8 @@
 *dist
 *build
 package-lock.json
+composer.lock
+/vendor
 
 *tests/e2e/videos/
 *tests/e2e/screenshots/

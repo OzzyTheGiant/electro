@@ -1,0 +1,28 @@
+{
+    "name": "ozzythegiant/electro",
+    "description": "A sample electric bill tracking application built with React, Vue, and Angular on the front end, with Slim, Laravel, Express, Flask, Django, Spark, and Spring Boot on the backend, and with MySQL, SQLite, PostgreSQL, MongoDB, and CouchBase",
+    "type": "project",
+    "require": {
+        "slim/slim": "^3.12",
+        "atlas/table": "^1.2",
+        "monolog/monolog": "^1.24",
+        "aura/session": "^2.1"
+    },
+    "require-dev": {
+        "atlas/cli": "^2.2"
+    },
+    "authors": [
+        {
+            "name": "Oziel Perez",
+            "email": "OZLperez11@gmail.com"
+        }
+	],
+	"autoload": {
+		"psr-4": {
+			"electro\\models\\ClientSignIn\\":["php/models/Bill"],
+			"electro\\controllers\\":["php/controllers"],
+			"electro\\middleware\\":["php/middleware"],
+			"electro\\services\\":["php/services"]
+		}
+	}
+}
