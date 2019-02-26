@@ -5,7 +5,9 @@
 				<h2 class="level-left">Your Bills</h2>
 				<div class="level-right level is-marginless is-mobile">
 					<field class="level-left" v-model="year" name="bv-year" type="text" placeholder="Year" :horizontal="true" length="4"/>
-					<button class="level-right button" @click.prevent="toggleView"><i class="fas fa-chart-line"></i></button>
+					<button class="level-right button" @click.prevent="toggleView">
+						<i class="fas" :class="{'fa-chart-line':!displayChart, 'fa-th-list':displayChart}"></i>
+					</button>
 				</div>
 			</div>
 			<bill-table v-show="bills && !displayChart" :bills="bills"/>
