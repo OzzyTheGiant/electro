@@ -4,22 +4,22 @@
  */
 declare(strict_types=1);
 
-namespace electro\models\Bill;
+namespace electro\models\User;
 
 use Atlas\Table\Table;
 
 /**
- * @method BillRow|null fetchRow($primaryVal)
- * @method BillRow[] fetchRows(array $primaryVals)
- * @method BillTableSelect select(array $whereEquals = [])
- * @method BillRow newRow(array $cols = [])
- * @method BillRow newSelectedRow(array $cols)
+ * @method UserRow|null fetchRow($primaryVal)
+ * @method UserRow[] fetchRows(array $primaryVals)
+ * @method UserTableSelect select(array $whereEquals = [])
+ * @method UserRow newRow(array $cols = [])
+ * @method UserRow newSelectedRow(array $cols)
  */
-class BillTable extends Table
+class UserTable extends Table
 {
     const DRIVER = 'mysql';
 
-    const NAME = 'Bills';
+    const NAME = 'Users';
 
     const COLUMNS = [
         'ID' => [
@@ -33,21 +33,10 @@ class BillTable extends Table
             'primary' => true,
             'options' => null,
         ],
-        'PaymentAmount' => [
-            'name' => 'PaymentAmount',
-            'type' => 'decimal',
-            'size' => 5,
-            'scale' => 2,
-            'notnull' => true,
-            'default' => '0.00',
-            'autoinc' => false,
-            'primary' => false,
-            'options' => null,
-        ],
-        'PaymentDate' => [
-            'name' => 'PaymentDate',
-            'type' => 'date',
-            'size' => null,
+        'Username' => [
+            'name' => 'Username',
+            'type' => 'varchar',
+            'size' => 30,
             'scale' => null,
             'notnull' => true,
             'default' => null,
@@ -55,11 +44,11 @@ class BillTable extends Table
             'primary' => false,
             'options' => null,
         ],
-        'User' => [
-            'name' => 'User',
-            'type' => 'int',
-            'size' => 10,
-            'scale' => 0,
+        'Password' => [
+            'name' => 'Password',
+            'type' => 'varchar',
+            'size' => 255,
+            'scale' => null,
             'notnull' => true,
             'default' => null,
             'autoinc' => false,
@@ -70,16 +59,14 @@ class BillTable extends Table
 
     const COLUMN_NAMES = [
         'ID',
-        'PaymentAmount',
-        'PaymentDate',
-        'User',
+        'Username',
+        'Password',
     ];
 
     const COLUMN_DEFAULTS = [
         'ID' => null,
-        'PaymentAmount' => '0.00',
-        'PaymentDate' => null,
-        'User' => null,
+        'Username' => null,
+        'Password' => null,
     ];
 
     const PRIMARY_KEY = [

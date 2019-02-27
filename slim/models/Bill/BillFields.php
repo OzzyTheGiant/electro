@@ -10,6 +10,7 @@ namespace electro\models\Bill;
  * @property mixed $ID int(10,0) NOT NULL
  * @property mixed $PaymentAmount decimal(5,2) NOT NULL
  * @property mixed $PaymentDate date NOT NULL
+ * @property mixed $User int(10,0) NOT NULL
  */
 trait BillFields
 {

@@ -12,6 +12,7 @@ use Atlas\Table\Row;
  * @property mixed $ID int(10,0) NOT NULL
  * @property mixed $PaymentAmount decimal(5,2) NOT NULL
  * @property mixed $PaymentDate date NOT NULL
+ * @property mixed $User int(10,0) NOT NULL
  */
 class BillRow extends Row
 {
@@ -19,5 +20,6 @@ class BillRow extends Row
         'ID' => null,
         'PaymentAmount' => '0.00',
         'PaymentDate' => null,
+        'User' => null,
     ];
 }
