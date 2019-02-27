@@ -7,7 +7,7 @@ import BillLineChart from '../../src/components/bill-viewer/BillLineChart.vue';
 import bills from "./test-data";
 
 describe("BillLineChart Component", () => {
-	const payments:number[] = bills.map(bill => bill.paymentAmount);
+	const payments:number[] = bills.map(bill => bill.PaymentAmount);
 
 	let wrapper: Wrapper<BillLineChart>;
 

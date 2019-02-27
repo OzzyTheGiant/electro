@@ -4,16 +4,16 @@
 			<tr><th>Date</th><th>Amount</th><th>Actions</th></tr>
 		</thead>
 		<tbody>
-			<tr v-for="bill of bills" :key="bill.id">
-				<td>{{ bill.paymentDate | shortDate }}</td>
-				<td>${{ bill.paymentAmount | currency }}</td>
+			<tr v-for="bill of bills" :key="bill.ID">
+				<td>{{ bill.PaymentDate | shortDate }}</td>
+				<td>${{ bill.PaymentAmount | currency }}</td>
 				<td>
 					<div class="field is-grouped">
 						<div class="control">
-							<button class="button" @click.prevent="onClickUpdateButton(bill.id)"><i class="fas fa-pen"></i></button>
+							<button class="button" @click.prevent="onClickUpdateButton(bill.ID)"><i class="fas fa-pen"></i></button>
 						</div>
 						<div class="control">
-							<button class="button is-danger" @click.prevent="onClickDeleteButton(bill.id)"><i class="fas fa-trash-alt"></i></button>
+							<button class="button is-danger" @click.prevent="onClickDeleteButton(bill.ID)"><i class="fas fa-trash-alt"></i></button>
 						</div>
 					</div>
 				</td>

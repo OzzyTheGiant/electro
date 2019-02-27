@@ -1,5 +1,5 @@
 export interface Bill {
-	id?:number;
-	paymentAmount:number;
-	paymentDate:string;
+	ID?:number;
+	PaymentAmount:number;
+	PaymentDate:string;
 }

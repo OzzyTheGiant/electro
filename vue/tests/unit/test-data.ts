@@ -1,16 +1,18 @@
-const bills = [
-	{id:1, paymentDate:"2019-01-01", paymentAmount:127.50},
-	{id:2, paymentDate:"2019-02-01", paymentAmount:92.50},
-	{id:3, paymentDate:"2019-03-01", paymentAmount:80.50},
-	{id:4, paymentDate:"2019-04-01", paymentAmount:75.50},
-	{id:5, paymentDate:"2019-05-01", paymentAmount:125.50},
-	{id:6, paymentDate:"2019-06-01", paymentAmount:107.50},
-	{id:7, paymentDate:"2019-07-01", paymentAmount:109.50},
-	{id:8, paymentDate:"2019-08-01", paymentAmount:95.50},
-	{id:9, paymentDate:"2019-09-01", paymentAmount:98.50},
-	{id:10, paymentDate:"2019-10-01", paymentAmount:82.50},
-	{id:11, paymentDate:"2019-11-01", paymentAmount:99.50},
-	{id:12, paymentDate:"2019-12-01", paymentAmount:133.50}
+import { Bill } from '@/models/Bill';
+
+const bills: Bill[] = [
+	{ID:1, PaymentDate:"2019-01-01", PaymentAmount:127.50},
+	{ID:2, PaymentDate:"2019-02-01", PaymentAmount:92.50},
+	{ID:3, PaymentDate:"2019-03-01", PaymentAmount:80.50},
+	{ID:4, PaymentDate:"2019-04-01", PaymentAmount:75.50},
+	{ID:5, PaymentDate:"2019-05-01", PaymentAmount:125.50},
+	{ID:6, PaymentDate:"2019-06-01", PaymentAmount:107.50},
+	{ID:7, PaymentDate:"2019-07-01", PaymentAmount:109.50},
+	{ID:8, PaymentDate:"2019-08-01", PaymentAmount:95.50},
+	{ID:9, PaymentDate:"2019-09-01", PaymentAmount:98.50},
+	{ID:10, PaymentDate:"2019-10-01", PaymentAmount:82.50},
+	{ID:11, PaymentDate:"2019-11-01", PaymentAmount:99.50},
+	{ID:12, PaymentDate:"2019-12-01", PaymentAmount:133.50}
 ];
 
 export default bills;

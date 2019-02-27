@@ -37,7 +37,7 @@ export default class BillViewer extends Vue {
 	public year:number = new Date().getFullYear();
 
 	get payments():number[] {
-		return this.bills ? this.bills.map(bill => bill.paymentAmount) : [];
+		return this.bills ? this.bills.map(bill => bill.PaymentAmount) : [];
 	}
 
 	public toggleView():void {
