@@ -4,7 +4,7 @@
  */
 declare(strict_types=1);
 
-namespace electro\models\User;
+namespace Electro\models\User;
 
 use Atlas\Table\Table;
 

@@ -4,7 +4,7 @@
  */
 declare(strict_types=1);
 
-namespace electro\models\User;
+namespace Electro\models\User;
 
 /**
  * @property mixed $ID int(10,0) NOT NULL

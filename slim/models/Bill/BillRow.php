@@ -4,7 +4,7 @@
  */
 declare(strict_types=1);
 
-namespace electro\models\Bill;
+namespace Electro\models\Bill;
 
 use Atlas\Table\Row;
 

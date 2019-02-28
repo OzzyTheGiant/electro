@@ -22,11 +22,11 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"electro\\models\\Bill\\":["slim/models/Bill"],
-			"electro\\models\\User\\":["slim/models/User"],
-			"electro\\controllers\\":["slim/controllers"],
-			"electro\\middleware\\":["slim/middleware"],
-			"electro\\services\\":["slim/services"]
+			"Electro\\models\\Bill\\":["slim/models/Bill"],
+			"Electro\\models\\User\\":["slim/models/User"],
+			"Electro\\controllers\\":["slim/controllers"],
+			"Electro\\middleware\\":["slim/middleware"],
+			"Electro\\services\\":["slim/services"]
 		}
 	}
 }

@@ -1,10 +1,10 @@
 <?php
-namespace electro\controllers;
+namespace Electro\controllers;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use electro\models\Bill\BillTable;
+use Electro\models\Bill\BillTable;
 
 class ModelController {
 	/** @var ContainerInterface $container */
