@@ -5,15 +5,17 @@
 *build
 package-lock.json
 composer.lock
-/vendor
+**/vendor
 *.http
+**/.phpunit.result.cache
 
 *tests/e2e/videos/
 *tests/e2e/screenshots/
 
 # local env files
-env.local
-env.*.local
+**/.env
+**/env.local
+**/env.*.local
 
 # Log files
 /logs
@@ -29,3 +31,10 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# Laravel files
+/laravel/public/hot
+/laravel/public/storage
+/laravel/storage/*.key
+**/Homestead.json
+**/Homestead.yaml
