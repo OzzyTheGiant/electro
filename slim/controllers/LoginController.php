@@ -56,6 +56,6 @@ class LoginController {
 	public function logout(Request $request, Response $response): Response {
 		$this->container->csrf->setCSRFCookie();
 		$this->container->session->destroy();
-		return $response->withStatus(200);
+		return $response->withStatus(204);
 	}
 }

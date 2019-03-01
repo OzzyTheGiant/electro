@@ -31,7 +31,7 @@ class ModelController {
 		$table = $this->container->atlas->get($this->table_name);
 		$row = $table->newRow($request->getParsedBody());
 		$table->insertRow($row);
-		return $response->withJson($row);
+		return $response->withStatus(201)->withJson($row);
 	}
 
 	/** updates record in database table */
@@ -51,6 +51,6 @@ class ModelController {
 		$table = $this->container->atlas->get($this->table_name);
 		$row = $table->fetchRow($args["id"]);
 		$table->deleteRow($row);
-		return $response->withJson($row);
+		return $response->withStatus(204);
 	}
 }
