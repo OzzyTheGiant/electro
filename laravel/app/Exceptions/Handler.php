@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Response;
+use Slim\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +17,11 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Auth\AuthenticationException::class,
+		\Illuminate\Auth\Access\AuthorizationException::class,
+		\Symfony\Component\HttpKernel\Exception\HttpException::class,
+		\Illuminate\Database\Eloquent\ModelNotFoundException::class,
+		\Illuminate\Validation\ValidationException::class
     ];
 
     /**
@@ -44,8 +52,18 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return parent::render($request, $exception);
-    }
+		if ($response = $this->createUserMessage($e)) {
+			return $response;
+		} return parent::render($request, $e);
+	}
+	
+	public function createUserMessage(Exception $e) {
+		if ($e instanceof ModelNotFoundException) {
+			return response()->json(["message" => "The specified item was not found"], 404);
+		} else if ($e instanceof QueryException) {
+			return response()->json(["message" => "Something went wrong while querying the database"], 400);
+		}
+	}
 }

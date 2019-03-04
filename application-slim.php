@@ -56,11 +56,11 @@ $container["csrf"] = function(ContainerInterface $container) {
 $app->group("/api", function() {
 	$this->post("/login", LoginController::class . ":login");
 	$this->get("/logout", LoginController::class . ":logout");
-	$this->group("", function() {
-		$this->get("/bills", ModelController::class . ":getAll");
-		$this->post("/bill", ModelController::class . ":add");
-		$this->put("/bill", ModelController::class .":update");
-		$this->delete("/bill/{id}", ModelController::class . ":delete");
+	$this->group("/bills", function() {
+		$this->get("", ModelController::class . ":getAll");
+		$this->post("", ModelController::class . ":add");
+		$this->put("", ModelController::class .":update");
+		$this->delete("/{id}", ModelController::class . ":delete");
 	});
 });
 

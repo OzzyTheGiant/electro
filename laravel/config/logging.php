@@ -42,7 +42,7 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('../../logs/application.log'),
             'level' => 'debug',
         ],
 
