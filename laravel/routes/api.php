@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,5 +13,3 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::resource('bills', BillController::class);
