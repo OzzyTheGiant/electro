@@ -6,8 +6,6 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Response;
-use Slim\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
@@ -64,6 +62,8 @@ class Handler extends ExceptionHandler
 			return response()->json(["message" => "The specified item was not found"], 404);
 		} else if ($e instanceof QueryException) {
 			return response()->json(["message" => "Something went wrong while querying the database"], 400);
+		} else if ($e instanceof ValidationException) {
+			return response()->json(["message" => $e->getMessage()], 400);
 		}
 	}
 }
