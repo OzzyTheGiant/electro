@@ -6,5 +6,5 @@ return [
         '8$KJuJ0p5xim',
     ],
     'namespace' => 'Electro\\models',
-    'directory' => './slim/models',
+    'directory' => '../models',
 ];

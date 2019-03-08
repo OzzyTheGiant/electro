@@ -19,7 +19,7 @@ if ($_SERVER["SERVER_NAME"] === "electro") {
 }
 
 // Create app with configuration settings
-$app = new Slim\App(include_once("config/slim-config.php"));
+$app = new Slim\App(include_once("slim/config/slim-config.php"));
 $container = $app->getContainer();
 
 /* === CONTAINER DEPENDENCIES === */

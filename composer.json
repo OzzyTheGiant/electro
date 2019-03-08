@@ -69,6 +69,6 @@
         "post-create-project-cmd": [
             "@php laravel/artisan key:generate --ansi"
 		],
-		"generate-models": "php ./vendor/bin/atlas-skeleton.php ./config/atlas-skeleton-config.php"
+		"generate-models": "php ./vendor/bin/atlas-skeleton.php ./slim/config/atlas-skeleton-config.php"
     }
 }
