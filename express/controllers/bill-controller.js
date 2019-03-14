@@ -15,6 +15,7 @@ class BillController {
 		const bill = Bill.withValidatedData(request.body);
 		db.insert(bill).into(BillController.tableName).then(result => {
 			if (!result) return next(new NotFoundError("bill"));
+			bill.ID = result[0];
 			response.status(201).json(bill);
 		}).catch(BillController.errorHandler(next));
 	}
