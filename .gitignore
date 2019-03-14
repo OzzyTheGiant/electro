@@ -8,6 +8,7 @@ composer.lock
 **/vendor
 *.http
 **/.phpunit.result.cache
+express/config/*
 
 *tests/e2e/videos/
 *tests/e2e/screenshots/
