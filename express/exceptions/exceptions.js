@@ -37,4 +37,11 @@ class DatabaseError extends Error {
 	}
 }
 
-module.exports = { ValidationError, NotFoundError, DatabaseError };
+class AuthenticationError extends Error {
+	constructor() {
+		this.message = "Username or password is not correct";
+		this.code = 401;
+	}
+}
+
+module.exports = { ValidationError, NotFoundError, DatabaseError, AuthenticationError };

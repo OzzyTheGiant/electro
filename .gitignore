@@ -8,7 +8,7 @@ composer.lock
 **/vendor
 *.http
 **/.phpunit.result.cache
-express/config/*
+express/config/db-config.js
 
 *tests/e2e/videos/
 *tests/e2e/screenshots/
