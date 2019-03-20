@@ -1,5 +1,6 @@
 const db = require('../database/mysql');
 const bcrypt = require('bcrypt');
+const { addCSRFToken } = require("../middleware/middleware");
 
 class LoginController {
 	// TODO: add CSRF token
@@ -23,7 +24,9 @@ class LoginController {
 	}
 
 	static logout(request, response, next) {
-		request.session.destroy(error => {
+		request.session.regenerate(error => {
+			// must use middleware here since session was recreated
+			addCSRFToken(request, response);
 			response.status(204).end();
 		});
 	}

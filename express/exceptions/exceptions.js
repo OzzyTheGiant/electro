@@ -39,9 +39,24 @@ class DatabaseError extends Error {
 
 class AuthenticationError extends Error {
 	constructor() {
+		super();
 		this.message = "Username or password is not correct";
 		this.code = 401;
 	}
 }
 
-module.exports = { ValidationError, NotFoundError, DatabaseError, AuthenticationError };
+class AuthorizationError extends Error {
+	constructor() {
+		super();
+		this.code = 403;
+		this.message = "You are not authorized to perform this request";
+	}
+}
+
+module.exports = { 
+	ValidationError, 
+	NotFoundError, 
+	DatabaseError, 
+	AuthenticationError,
+	AuthorizationError
+};

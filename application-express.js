@@ -1,9 +1,9 @@
 const express = require("express");
 const session = require("express-session");
-const sessionConfig = require("./express/config/session-config");
-const router = require("./express/routes");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const router = require("./express/routes");
+const { sessionConfig } = require("./express/config/session-config");
 const { deleteSessionCookie } = require("./express/middleware/middleware");
 const { NotFoundError } = require("./express/exceptions/exceptions");
 

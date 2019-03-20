@@ -1,3 +1,4 @@
+const { csrfConfig } = require("../config/session-config");
 require('dotenv').config();
 
 function deleteSessionCookie(request, response, next) {
@@ -6,4 +7,9 @@ function deleteSessionCookie(request, response, next) {
     } next();
 };
 
-module.exports = { deleteSessionCookie };
+function addCSRFToken(request, response, next) {
+	response.cookie(process.env.XSRF_COOKIE, request.csrfToken(), csrfConfig.cookie);
+	if (next) next();
+}
+
+module.exports = { deleteSessionCookie, addCSRFToken };
