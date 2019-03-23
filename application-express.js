@@ -29,12 +29,11 @@ app.use((request, respose, next) => {
 	next(new NotFoundError("API route")); // Error 404 - Not Found handler
 });
 app.use((error, request, response, next) => { // global error handler
-	logger.error(error);
+	if (error.loggable) logger.error(error, error.metadata);
 	response.status(error.code || 500).json({message:error.message});
 });
 
 /* Start server */
 app.listen(process.env.APP_PORT, function() { 
 	logger.notice("Server listening on port " + process.env.APP_PORT);
-	logger.error(new Error("Testing standard log"));
 });
