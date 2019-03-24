@@ -7,16 +7,16 @@ use Atlas\Table\TableLocator;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Aura\Session\SessionFactory;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Dotenv\Dotenv;
 use Electro\controllers\ModelController;
 use Electro\controllers\LoginController;
 use Electro\services\CSRFTokenManager;
 
-$env = "ENVIRONMENT"; // ignore intelephense duplicate symbol error
-if ($_SERVER["SERVER_NAME"] === "electro") {
-	define("$env", "development");
-} else {
-	define("$env", "production");
-}
+// load environment variables from .env
+$dotenv = Dotenv::create(__DIR__);
+$dotenv->load();
 
 // Create app with configuration settings
 $app = new Slim\App(include_once("slim/config/slim-config.php"));
@@ -47,6 +47,8 @@ $container["session"] = function(ContainerInterface $container) {
 	$session->setName("electro"); // to specify which session cookie to use
 	return $session;
 };
+
+
 
 $container["csrf"] = function(ContainerInterface $container) {
 	return new CSRFTokenManager($container);
