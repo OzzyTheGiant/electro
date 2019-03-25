@@ -26,8 +26,8 @@ $container = $app->getContainer();
 $container["errorHandler"] = function(ContainerInterface $container) {
 	return function(Request $request, Response $response, $exception) {
 		return $response
-			->withStatus(500)
-			->withJson('{"message":"Server Error: ' . $exception->getMessage());
+			->withStatus($exception->getCode() ?: 500)
+			->withJson(["message" => $exception->getMessage()]);
 	};
 };
 
@@ -61,7 +61,7 @@ $app->group("/api", function() {
 	$this->group("/bills", function() {
 		$this->get("", ModelController::class . ":getAll");
 		$this->post("", ModelController::class . ":add");
-		$this->put("", ModelController::class .":update");
+		$this->put("/{id}", ModelController::class .":update");
 		$this->delete("/{id}", ModelController::class . ":delete");
 	});
 });
