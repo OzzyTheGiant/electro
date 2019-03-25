@@ -42,14 +42,11 @@
 			"App\\":"laravel/app",
 			"Electro\\models\\Bill\\":["slim/models/Bill"],
 			"Electro\\models\\User\\":["slim/models/User"],
+			"Electro\\exceptions\\":["slim/exceptions"],
 			"Electro\\controllers\\":["slim/controllers"],
 			"Electro\\middleware\\":["slim/middleware"],
 			"Electro\\services\\":["slim/services"]
-		},
-		"classmap": [
-            "laravel/database/seeds",
-            "laravel/database/factories"
-        ]
+		}
 	},
 	"autoload-dev": {
         "psr-4": {
