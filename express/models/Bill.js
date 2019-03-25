@@ -20,6 +20,7 @@ class Bill {
 		const properties = Bill.getValidationHandlers();
 		for (const prop in properties) {
 			for (const validator of properties[prop]) { // validate prop using the specified validators
+				if (typeof data[prop] === "string") data[prop] = data[prop].trim(); // trim whitespace
 				validator(prop, data[prop]);
 			}
 		} return new Bill(data);
