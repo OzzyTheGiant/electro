@@ -5,7 +5,7 @@ const { DatabaseError, NotFoundError } = require('../exceptions/exceptions');
 class BillController {
 	/** Get all bills from database	*/
 	static getAll(request, response, next) {
-		db.select().from(BillController.tableName).then(results => {
+		db.select().from(BillController.tableName).orderBy('PaymentDate', 'DESC').then(results => {
 			response.json(results);
 		}).catch(BillController.errorHandler(next));
 	}
