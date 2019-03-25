@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Electro\models\Bill;
 
 use Atlas\Table\Row;
+use Electro\services\Validators;
 
 /**
  * @property mixed $ID int(10,0) NOT NULL
@@ -21,5 +22,34 @@ class BillRow extends Row
         'PaymentAmount' => '0.00',
         'PaymentDate' => null,
         'User' => null,
-    ];
+	];
+	
+	protected $validators = [
+		'User' => [Validators::REQUIRED],
+		'PaymentAmount' => [ Validators::REQUIRED, [Validators::MAX, 99999.99] ],
+		'PaymentDate' => [Validators::REQUIRED, Validators::IS_DATE]
+	];
+
+	/** validate all properties using preselected validator functions in $validators array */
+	public function validateData():void {
+		foreach ($this->validators as $property => $validators) {
+			foreach ($validators as $validator) {
+				/* since functions can't be called at property definition and constructor is final,
+				validator and arguments are stored in array and called to create validation function, which will
+				then be called immediately */
+				if (is_array($validator)) {
+					$arg = $validator[1];
+					$validator_name = $validator[0]; 
+					Validators::{$validator_name}($arg)($property, $this->{$property});
+				} else Validators::{$validator}($property, $this->{$property});
+			}
+		}
+	}
+
+	/** trim whitespace on all string properties */
+	public function trimAllProperties():void {
+		foreach ($this->cols as $key => $value) {
+			if (is_string($this->{$key})) trim($this->{$key});
+		}
+	}
 }

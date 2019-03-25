@@ -40,8 +40,7 @@
 	"autoload": {
 		"psr-4": {
 			"App\\":"laravel/app",
-			"Electro\\models\\Bill\\":["slim/models/Bill"],
-			"Electro\\models\\User\\":["slim/models/User"],
+			"Electro\\models\\":["slim/models"],
 			"Electro\\exceptions\\":["slim/exceptions"],
 			"Electro\\controllers\\":["slim/controllers"],
 			"Electro\\middleware\\":["slim/middleware"],
