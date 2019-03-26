@@ -60,7 +60,7 @@ class ModelController {
 			$table->updateRow($row);
 			return $response->withJson($row);
 		} catch (TypeError $e) {
-			if (!$row) throw new NotFoundException(strtolower($this->entity_name));
+			if (!$row) throw new NotFoundException($this->entity_name);
 		} catch (ValidationException $e) {
 			throw $e;
 		} catch (Exception $e) {
@@ -76,7 +76,7 @@ class ModelController {
 			$table->deleteRow($row);
 			return $response->withStatus(204);
 		} catch (TypeError $e) {
-			if (!$row) throw new NotFoundException(strtolower($this->entity_name));
+			if (!$row) throw new NotFoundException($this->entity_name);
 		} catch (Exception $e) {
 			throw new DatabaseException($e->getMessage());
 		}
