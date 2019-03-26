@@ -6,7 +6,6 @@ use \Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Electro\models\Bill\BillTable;
 use Electro\exceptions\NotFoundException;
 use Electro\exceptions\DatabaseException;
 use Electro\exceptions\ValidationException;

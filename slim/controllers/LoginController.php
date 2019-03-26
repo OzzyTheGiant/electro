@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Electro\models\User\UserTable;
 use Electro\models\User\UserRow;
+use Electro\exceptions\AuthenticationException;
 
 class LoginController {
 	/** @var ContainerInterface $container */
@@ -33,9 +34,9 @@ class LoginController {
 				$this->startSession($user);
 				return $response->withStatus(200)->withJson($user);
 			} else {
-				return $response->withStatus(401)->withJson('{"message": Username or password is incorrect');
+				throw new AuthenticationException();
 			}
-		} return $response->withStatus(401)->withJson('{"message":"Username or password is not correct"}');
+		} throw new AuthenticationException();
 	}
 
 	/** start a new session by saving current user in session segment */
