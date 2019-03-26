@@ -13,22 +13,22 @@ use Electro\exceptions\ValidationException;
 
 class ModelController {
 	/** @var ContainerInterface $container */
-	private $container;
+	protected $container;
+	/** @var String $entity_name */
+	protected $entity_name = "";
 	/** @var String $table_name */
-	private $table_name = BillTable::class;
+	protected $table_name = "";
 
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;
 	}
 
 	/** @return array returns array of query results, or empty array if no results found */
-	public function getAll(Request $request, Response $response): Response {
+	public function getAll(Request $request, Response $response, $order_by = null): Response {
 		try {
-			$results = $this->container->atlas
-				->get($this->table_name)
-				->select()
-				->orderBy("PaymentDate DESC")
-				->fetchRows();
+			$query = $this->container->atlas->get($this->table_name)->select();
+			if ($order_by) $query = $query->orderBy($order_by);
+			$results = $query->fetchRows();
 			return $response->withJson($results);
 		} catch (Exception $e) {
 			throw new DatabaseException($e->getMessage());
@@ -61,7 +61,7 @@ class ModelController {
 			$table->updateRow($row);
 			return $response->withJson($row);
 		} catch (TypeError $e) {
-			if (!$row) throw new NotFoundException("bill");
+			if (!$row) throw new NotFoundException(strtolower($this->entity_name));
 		} catch (ValidationException $e) {
 			throw $e;
 		} catch (Exception $e) {
@@ -77,7 +77,7 @@ class ModelController {
 			$table->deleteRow($row);
 			return $response->withStatus(204);
 		} catch (TypeError $e) {
-			if (!$row) throw new NotFoundException("bill");
+			if (!$row) throw new NotFoundException(strtolower($this->entity_name));
 		} catch (Exception $e) {
 			throw new DatabaseException($e->getMessage());
 		}

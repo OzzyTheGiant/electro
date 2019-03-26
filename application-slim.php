@@ -10,9 +10,9 @@ use Aura\Session\SessionFactory;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Dotenv\Dotenv;
-use Electro\controllers\ModelController;
 use Electro\controllers\LoginController;
 use Electro\services\CSRFTokenManager;
+use Electro\controllers\BillController;
 
 // load environment variables from .env
 $dotenv = Dotenv::create(__DIR__);
@@ -59,10 +59,10 @@ $app->group("/api", function() {
 	$this->post("/login", LoginController::class . ":login");
 	$this->get("/logout", LoginController::class . ":logout");
 	$this->group("/bills", function() {
-		$this->get("", ModelController::class . ":getAll");
-		$this->post("", ModelController::class . ":add");
-		$this->put("/{id}", ModelController::class .":update");
-		$this->delete("/{id}", ModelController::class . ":delete");
+		$this->get("", BillController::class . ":getAllBills");
+		$this->post("", BillController::class . ":add");
+		$this->put("/{id}", BillController::class .":update");
+		$this->delete("/{id}", BillController::class . ":delete");
 	});
 });
 
