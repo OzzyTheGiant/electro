@@ -13,7 +13,7 @@ router.get("/", csrfProtection, addCSRFToken, (request, response, next) => {
 })
 
 router.post("/login", csrfProtection, addCSRFToken, LoginController.login);
-router.get("/logout", csrfProtection, LoginController.logout);
+router.post("/logout", csrfProtection, LoginController.logout);
 
 router
 	.route("/bills(/:id)?")
