@@ -3,9 +3,9 @@ namespace Electro\exceptions;
 
 use \Exception;
 
-class Authorization extends Exception {
-	protected $code = 401;
-	protected $message = "Username or password is incorrect";
+class AuthorizationException extends Exception {
+	protected $code = 403;
+	protected $message = "You are not authorized to perform this action";
 
 	public function __construct() {}
 }

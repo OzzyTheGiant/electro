@@ -11,8 +11,9 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Dotenv\Dotenv;
 use Electro\controllers\LoginController;
-use Electro\services\CSRFTokenManager;
 use Electro\controllers\BillController;
+use Electro\middleware\CSRFTokenMiddleware;
+use Electro\middleware\SessionMiddleware;
 
 // load environment variables from .env
 $dotenv = Dotenv::create(__DIR__);
@@ -45,19 +46,26 @@ $container["session"] = function(ContainerInterface $container) {
 	$session_factory = new SessionFactory();
 	$session = $session_factory->newInstance($_COOKIE);
 	$session->setName("electro"); // to specify which session cookie to use
+	$session->setCookieParams([
+		'lifetime' => $_ENV["SESSION_LIFETIME"] * 60,
+		'secure' => $_ENV['APP_ENV'] !== "local",
+		'httponly' => true,
+		'path' => '/'
+	]);
+	// create brand new session, or if session cookie exists, resume previous session
+	$session->start();
 	return $session;
 };
 
-
-
-$container["csrf"] = function(ContainerInterface $container) {
-	return new CSRFTokenManager($container);
-};
+/* === MIDDLEWARE === */
+$app->add(new SessionMiddleware($container)); // set the actual session cookie
+$app->add(new CSRFTokenMiddleware($container));
 
 /* === ROUTES === */
 $app->group("/api", function() {
+	$this->get("", LoginController::class . ":home");
 	$this->post("/login", LoginController::class . ":login");
-	$this->get("/logout", LoginController::class . ":logout");
+	$this->post("/logout", LoginController::class . ":logout");
 	$this->group("/bills", function() {
 		$this->get("", BillController::class . ":getAllBills");
 		$this->post("", BillController::class . ":add");

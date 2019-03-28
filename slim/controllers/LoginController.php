@@ -20,6 +20,10 @@ class LoginController {
 		$this->container = $container;
 	}
 
+	public function home(Request $request, Response $response): Response {
+		return $response->withStatus(204);
+	}
+
 	/** Check if user exists, and if so, verify password. If successful, log in user 
 	 * @return array */
 	public function login(Request $request, Response $response): Response {
@@ -31,32 +35,26 @@ class LoginController {
 			->fetchRow(); // returns array instead of UserRow
 		if ($user) {
 			if (password_verify($credentials["password"], $user->Password)) {
-				$this->startSession($user);
-				return $response->withStatus(200)->withJson($user);
+				$current_user = ["ID" => $user->ID, "Username" => $user->Username];
+				$this->startLoginSession($current_user);
+				return $response->withStatus(200)->withJson($current_user);
 			} else {
 				throw new AuthenticationException();
 			}
 		} throw new AuthenticationException();
 	}
 
-	/** start a new session by saving current user in session segment */
-	private function startSession(UserRow $user) {
-		$token_manager = $this->container->csrf;
+	/** save current user in session segment */
+	private function startLoginSession(array $user): void {
 		$session = $this->container->session;
-		$session->setName("electro");
-		$session->setCookieParams([
-			'lifetime' => '28800',
-			'secure' => ENVIRONMENT === "production",
-			'httpOnly' => true
-		]);
+		$session->regenerateId();
 		$segment = $session->getSegment(self::SESSION_SEGMENT);
 		$segment->set("CurrentUser", $user);
-		$segment->set("CSRFToken", $token_manager->generateToken());
 	}
 
+	/** dispose of session and create a new one to log back in */
 	public function logout(Request $request, Response $response): Response {
-		$this->container->csrf->setCSRFCookie();
-		$this->container->session->destroy();
+		$this->container->session->regenerateId();
 		return $response->withStatus(204);
 	}
 }
