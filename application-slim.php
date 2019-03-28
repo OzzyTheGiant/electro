@@ -14,6 +14,7 @@ use Electro\controllers\LoginController;
 use Electro\controllers\BillController;
 use Electro\middleware\CSRFTokenMiddleware;
 use Electro\middleware\SessionMiddleware;
+use Electro\exceptions\Loggable;
 
 // load environment variables from .env
 $dotenv = Dotenv::create(__DIR__);
@@ -25,7 +26,10 @@ $container = $app->getContainer();
 
 /* === CONTAINER DEPENDENCIES === */
 $container["errorHandler"] = function(ContainerInterface $container) {
-	return function(Request $request, Response $response, $exception) {
+	return function(Request $request, Response $response, $exception) use ($container) {
+		if ($exception instanceof Loggable) { // log error first before sending response
+			$container->logger->error($exception->getMessage(), $exception->getMetadata());
+		}
 		return $response
 			->withStatus($exception->getCode() ?: 500)
 			->withJson(["message" => $exception->getMessage()]);
@@ -55,6 +59,13 @@ $container["session"] = function(ContainerInterface $container) {
 	// create brand new session, or if session cookie exists, resume previous session
 	$session->start();
 	return $session;
+};
+
+$container["logger"] = function(ContainerInterface $container) {
+	$logger = new Logger('ApplicationLog');
+	$logger->pushHandler(new StreamHandler(__DIR__ . "/logs/application.log", Logger::WARNING));
+	$logger->pushHandler(new StreamHandler("php://stderr", Logger::WARNING));
+	return $logger;
 };
 
 /* === MIDDLEWARE === */
