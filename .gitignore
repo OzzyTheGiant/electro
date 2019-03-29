@@ -42,4 +42,4 @@ yarn-error.log*
 
 # Python virtualenv files and cache
 /venv
-/__pycache__
+**/__pycache__
