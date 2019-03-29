@@ -39,3 +39,7 @@ yarn-error.log*
 /laravel/storage/*.key
 **/Homestead.json
 **/Homestead.yaml
+
+# Python virtualenv files and cache
+/venv
+/__pycache__
