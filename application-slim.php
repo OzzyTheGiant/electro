@@ -69,6 +69,14 @@ $container["logger"] = function(ContainerInterface $container) {
 };
 
 /* === MIDDLEWARE === */
+$app->add(function($request, $response, $next) {
+	/* unset Server and X-Powered-By headers */
+	$response = $next($request, $response);
+	if ($_ENV["APP_ENV"] !== 'local') {
+		$response = $response->withoutHeader("Server");
+		$response = $response->withoutHeader("X-Powered-By");
+	} return $response;
+});
 $app->add(new SessionMiddleware($container)); // set the actual session cookie
 $app->add(new CSRFTokenMiddleware($container));
 
