@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Electro\exceptions\NotFoundException;
 use Electro\exceptions\DatabaseException;
 use Electro\exceptions\ValidationException;
+use Electro\exceptions\EmptyRequestBodyException;
 
 class ModelController {
 	/** @var ContainerInterface $container */
@@ -41,6 +42,8 @@ class ModelController {
 			$row = $table->newRow($request->getParsedBody());
 			$table->insertRow($row);
 			return $response->withStatus(201)->withJson($row);
+		} catch (TypeError $e) {
+			throw new EmptyRequestBodyException();
 		} catch (ValidationException $e) {
 			throw $e;
 		} catch (Exception $e) {
@@ -50,8 +53,8 @@ class ModelController {
 
 	/** updates record in database table */
 	public function update(Request $request, Response $response, array $args): response {
+		if (!$bill = $request->getParsedBody()) throw new EmptyRequestBodyException();
 		try {
-			$bill = $request->getParsedBody();
 			$table = $this->container->atlas->get($this->table_name);
 			$row = $table->fetchRow($args["id"]);
 			foreach ($bill as $key => $value) {
