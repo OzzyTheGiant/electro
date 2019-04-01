@@ -1,4 +1,5 @@
 const Validators = require("../services/validators");
+const { EmptyRequestBodyError } = require("../exceptions/exceptions");
 
 class Bill {
 	constructor(props) {
@@ -18,6 +19,7 @@ class Bill {
 
 	static withValidatedData(data) {
 		const properties = Bill.getValidationHandlers();
+		if (Object.keys(data).length === 0) throw new EmptyRequestBodyError();
 		for (const prop in properties) {
 			for (const validator of properties[prop]) { // validate prop using the specified validators
 				if (typeof data[prop] === "string") data[prop] = data[prop].trim(); // trim whitespace

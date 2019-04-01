@@ -58,10 +58,20 @@ class AuthorizationError extends Error {
 	}
 }
 
+class EmptyRequestBodyError extends Error {
+	constructor() {
+		super();
+		this.message = "No data was submitted to the server";
+		this.code = 400;
+		this.loggable = false;
+	}
+}
+
 module.exports = { 
 	ValidationError, 
 	NotFoundError, 
 	DatabaseError, 
 	AuthenticationError,
-	AuthorizationError
+	AuthorizationError,
+	EmptyRequestBodyError
 };

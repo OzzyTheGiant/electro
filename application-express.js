@@ -34,6 +34,6 @@ app.use((error, request, response, next) => { // global error handler
 });
 
 /* Start server */
-app.listen(process.env.APP_PORT, function() { 
-	logger.notice("Server listening on port " + process.env.APP_PORT);
+app.listen(4000, function() { 
+	logger.notice("Server listening on port " + 4000);
 });
