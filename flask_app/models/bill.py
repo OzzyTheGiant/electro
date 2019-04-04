@@ -4,7 +4,8 @@ from ._base import BaseModel;
 
 class Bill(BaseModel):
 	ID = PrimaryKeyField();
-	User = ForeignKeyField(User, db_column="ID", related_name = "Bills");
+	# column_name must be set to prevent peewee from using <field>_id column name
+	User = ForeignKeyField(User, column_name = "User", backref = "Bills");
 	PaymentAmount = DecimalField(max_digits = 5, decimal_places = 2);
 	PaymentDate = DateField();
 
