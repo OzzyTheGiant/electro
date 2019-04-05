@@ -1,17 +1,22 @@
 import os;
-from flask import request;
+from flask import request, jsonify;
 from flask_restful import Resource;
 from flask_restful.reqparse import RequestParser;
-from marshmallow import Schema, fields, post_load, validate, ValidationError
+from flask_app.errors import ValidationError;
+from marshmallow import Schema, fields, post_load, validate, ValidationError as InvalidDataError;
 from ..models import Bill;
 
 class BillSchema(Schema):
-	ID = fields.Int(dump_only = True);
+	ID = fields.Int();
 	# points to Bill.User.ID property when fetching from database
 	User = fields.Int(required = True, attribute = "User.ID");
-	# add custom validators to these fields
-	PaymentAmount = fields.Float(required = True);
+	PaymentAmount = fields.Float(required = True, validate = validate.Range(min=0.01, max=99999.99));
 	PaymentDate = fields.Date(required = True);
+
+	# TODO: check for unknown data fields in all other frameworks
+	error_messages = {
+		"unknown": "This field does not exist"
+	}
 
 	@post_load
 	def fix_user_field(self, data):
@@ -31,8 +36,23 @@ class BillResource(Resource):
 
 	def post(self):
 		# TODO: check that the month hasn't been used; do this for all frameworks
-		request_data = request.get_json();
-		validated_data = bill_schema.load(request_data);
-		query = Bill.insert(**validated_data);
-		request_data["ID"] = query.execute(database=None);
+		try:
+			request_data = request.get_json();
+			validated_data = bill_schema.load(request_data);
+		except InvalidDataError as error:
+			raise ValidationError(metadata = error.messages);
+		request_data["ID"] = Bill.insert(**validated_data).execute(database=None);
+		return (request_data, 201);
+
+	def put(self, id):
+		try:
+			request_data = request.get_json();
+			valdiated_data = bill_schema.load(request_data);
+		except InvalidDataError as error:
+			raise ValidationError(metadata = error.messages);
+		#Bill.update(**valdiated_data).where(Bill.ID == id).execute(database=None);
 		return request_data;
+
+	def delete(self, id):
+		Bill.delete_by_id(id);
+		return None, 204;
