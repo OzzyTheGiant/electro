@@ -1,5 +1,4 @@
-from flask import Flask, Blueprint, jsonify;
-from werkzeug.exceptions import NotFound;
+from flask import Flask, Blueprint
 from dotenv import load_dotenv;
 from flask_app import ElectroAPI;
 from flask_app.resources import BillResource;
@@ -11,7 +10,7 @@ app = Flask(__name__);
 
 # Create Api blueprint and add resources (routes)
 api_blueprint = Blueprint('api', __name__);
-api = ElectroAPI(api_blueprint); # contains custom error handler
+api = ElectroAPI(api_blueprint, catch_all_404s = True); # contains custom error handler
 api.add_resource(BillResource, "/bills", "/bills/<int:id>", endpoint = "bill");
 
 # Regsiter blueprint to app
