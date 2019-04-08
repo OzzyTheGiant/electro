@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint
 from dotenv import load_dotenv;
 from flask_app import ElectroAPI;
-from flask_app.resources import BillResource;
+from flask_app.resources import *;
 from flask_app.errors import *;
 
 load_dotenv(); # get environment variables
@@ -12,6 +12,7 @@ app = Flask(__name__);
 api_blueprint = Blueprint('api', __name__);
 api = ElectroAPI(api_blueprint, catch_all_404s = True); # contains custom error handler
 api.add_resource(BillResource, "/bills", "/bills/<int:id>", endpoint = "bill");
+api.add_resource(UserResource, "/login", "/logout", endpoint = "login");
 
 # Regsiter blueprint to app
 app.register_blueprint(api_blueprint, url_prefix="/api");

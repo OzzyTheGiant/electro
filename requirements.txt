@@ -1,5 +1,7 @@
 aniso8601==6.0.0
 astroid==2.2.5
+bcrypt==3.1.6
+cffi==1.12.2
 Click==7.0
 Flask==1.0.2
 Flask-RESTful==0.3.7
@@ -11,6 +13,7 @@ MarkupSafe==1.1.1
 marshmallow==3.0.0rc5
 mccabe==0.6.1
 peewee==3.9.3
+pycparser==2.19
 pylint==2.3.1
 PyMySQL==0.9.3
 python-dotenv==0.10.1
