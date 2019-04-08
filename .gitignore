@@ -6,6 +6,8 @@
 package-lock.json
 composer.lock
 **/vendor
+**/sessions/*
+!**/sessions/.gitkeep
 *.http
 **/.phpunit.result.cache
 express/config/db-config.js
