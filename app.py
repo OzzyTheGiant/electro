@@ -1,19 +1,19 @@
 import os;
-import base64;
-from flask import Flask, Blueprint, session, g;
+from flask import Flask, Blueprint, session, jsonify;
+from flask_wtf import CSRFProtect;
 from flask_kvsession import KVSessionExtension;
 from simplekv.idgen import HashDecorator;
 from simplekv.fs import WebFilesystemStore;
 from dotenv import load_dotenv;
-from flask_app import ElectroAPI;
+from flask_app import ElectroAPI, config;
 from flask_app.resources import *;
 from flask_app.middleware import *;
-from flask_app.errors import *;
+from flask_app.middleware.csrf import CSRFProtectionExtension;
 
 load_dotenv(); # get environment variables
 
 app = Flask(__name__);
-app.secret_key = base64.b64decode(os.getenv("APP_KEY").split(":")[1]);
+app.config.update(**config);
 
 # Configure Session using standard web session files,
 # more store types available in simplekv package
@@ -24,10 +24,12 @@ session_store = HashDecorator(WebFilesystemStore(
 ));
 KVSessionExtension(session_store, app);
 
+# Add CSRFProtect extension to flask app
+# NOTE: this extends flask_wtf.CSRFProtect class; see class definition for details
+CSRFProtectionExtension(app);
+
 # Create Api blueprint and add resources (routes)
 api_blueprint = Blueprint('api', __name__);
-
-# Create Api and with specified blueprint and add json resources
 api = ElectroAPI(api_blueprint, catch_all_404s = True); # contains custom error handler
 api.add_resource(BillResource, "/bills", "/bills/<int:id>", endpoint = "bill");
 api.add_resource(UserResource, "/login", "/logout", endpoint = "login");
@@ -36,8 +38,14 @@ api.add_resource(UserResource, "/login", "/logout", endpoint = "login");
 app.register_blueprint(api_blueprint, url_prefix="/api");
 
 @app.before_request
-def middleware_handler():
-	manage_session();
+def middleware_pre_request_handler():
+	# instantiate middleware classes and call them for procedures before request
+	SessionMiddleware()();
+
+@app.after_request
+def middleware_post_request_handler(response):
+	CSRFMiddleware()(response);
+	return response;
 
 @app.route("/api")
 def home():

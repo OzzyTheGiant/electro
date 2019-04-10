@@ -1,5 +1,5 @@
 import os;
-from flask import request;
+from flask import request, session;
 from flask_restful import Resource;
 from werkzeug.exceptions import BadRequest;
 from peewee import ProgrammingError, DoesNotExist;
@@ -44,7 +44,12 @@ class UserResource(Resource):
 			});
 		if not checkpw(validated_data["Password"].encode("utf-8"), user.Password.encode("utf-8")):
 			raise AuthenticationError();
-		return user_schema.dump(user);
+		else:
+			current_user = user_schema.dump(user);
+			session.regenerate();
+			session["current_user"] = current_user;
+		return current_user;
 
 	def logout(self):
-		pass;
+		session.regenerate();
+		return ("", 204);

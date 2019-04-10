@@ -22,10 +22,11 @@ class NotFoundError(Exception):
 
 class AuthorizationError(HTTPException):
 	"""Error for when user is not authorized to perform a specific rest api endpoint or CSRF token not valid"""
-	def __init__(self):
+	def __init__(self, metadata = None):
 		self.description = "You are not authorized to perform this action";
 		self.code = 403;
-		self.loggable = False
+		self.loggable = False;
+		self.metadata = metadata;
 
 class AuthenticationError(HTTPException):
 	"""Error for when credentials are incorrect"""
