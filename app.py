@@ -6,11 +6,13 @@ from simplekv.idgen import HashDecorator;
 from simplekv.fs import WebFilesystemStore;
 from dotenv import load_dotenv;
 from flask_app import ElectroAPI, config;
+from flask_app.config import configure_logging;
 from flask_app.resources import *;
 from flask_app.middleware import *;
 from flask_app.middleware.csrf import CSRFProtectionExtension;
 
 load_dotenv(); # get environment variables
+configure_logging(); # configure loggers before starting app
 
 app = Flask(__name__);
 app.config.update(**config);
@@ -37,9 +39,9 @@ api.add_resource(UserResource, "/login", "/logout", endpoint = "login");
 # Register blueprint to app
 app.register_blueprint(api_blueprint, url_prefix="/api");
 
+# instantiate middleware classes and call them for procedures before request
 @app.before_request
 def middleware_pre_request_handler():
-	# instantiate middleware classes and call them for procedures before request
 	SessionMiddleware()();
 
 @app.after_request

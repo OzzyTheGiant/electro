@@ -5,7 +5,7 @@ class ValidationError(Exception):
 	def __init__(self, metadata = None):
 		self.description = "The data provided is invalid";
 		self.code = 400;
-		self.loggable = False
+		self.loggable = False;
 		if metadata:
 			self.description = "";
 			for field, messages in metadata.items():

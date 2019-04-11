@@ -28,8 +28,14 @@ bills_schema = BillSchema(many = True);
 
 class BillResource(Resource):
 	def get(self):
-		bills = Bill.select();
-		return bills_schema.dump([bill for bill in bills]);
+		try:
+			bills = Bill.select();
+			return bills_schema.dump([bill for bill in bills])
+		except ProgrammingError as error:
+			raise DatabaseError(metadata = {
+				'sql_error_code':error.args[0],
+				'sql_error_message':error.args[1]
+			});
 
 	def post(self):
 		# TODO: check that the month hasn't been used; do this for all frameworks
@@ -67,7 +73,13 @@ class BillResource(Resource):
 		return request_data;
 
 	def delete(self, id):
-		rows = Bill.delete_by_id(id);
+		try:
+			rows = Bill.delete_by_id(id);
+		except ProgrammingError as error:
+			raise DatabaseError(metadata = {
+				'sql_error_code':error.args[0],
+				'sql_error_message':error.args[1]
+			});
 		if not rows:
 			raise NotFoundError(item = "bill");
 		return None, 204;
