@@ -128,3 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 APPEND_SLASH = False;
+
+REST_FRAMEWORK = {
+	"EXCEPTION_HANDLER":"django_app.application.exceptions.global_exception_handler"
+}

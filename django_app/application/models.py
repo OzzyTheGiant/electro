@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser;
 from django.db import models;
 
 # will not be using django's auth User model due to field requirements
-class User(AbstractBaseUser):
+class User(AbstractBaseUser): # implements only password and last_login fields as well as a few methods
 	"""Model for database table Users"""
 	ID = models.IntegerField(primary_key = True);
 	Username = models.CharField(max_length = 30, unique = True);
