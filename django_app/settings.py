@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = base64.b64decode(os.getenv("APP_KEY").split(":")[1]);
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("APP_ENV") == "local"
 
 ALLOWED_HOSTS = ["electro", "localhost", "127.0.0.1"]
 

@@ -1,7 +1,9 @@
 """App exception classes and custom exception handler"""
+from django.http import JsonResponse;
 from rest_framework.views import exception_handler;
 from rest_framework.response import Response;
 from rest_framework.exceptions import APIException, ValidationError;
+from rest_framework.status import HTTP_404_NOT_FOUND;
 
 def global_exception_handler(exception, context):
 	"""Custom global exception handler that will output HTTP and Server errors"""
@@ -34,3 +36,8 @@ def _craft_validation_error_message(exception):
 		for error_detail in field_errors:
 			message += str(error_detail) + " ";
 	return message;
+
+
+def url_not_found_error_handler(request, exception):
+	"""Return a json response on all Not Found urls"""
+	return JsonResponse({"message":"This url could not be found"}, status = HTTP_404_NOT_FOUND);

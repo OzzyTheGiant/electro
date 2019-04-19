@@ -14,14 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin;
 from django.urls import include, path;
+from django.conf.urls import handler404;
 from rest_framework.routers import DefaultRouter;
 from .application import views;
+from .application.exceptions import url_not_found_error_handler;
 
 router = DefaultRouter(trailing_slash = False);
 router.register(r'bills', views.BillViewSet);
 
 urlpatterns = [
-	path("api/", include(router.urls))
+	path("api/", include(router.urls)),
 ];
+
+handler404 = url_not_found_error_handler;
