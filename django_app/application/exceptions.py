@@ -1,9 +1,12 @@
 """App exception classes and custom exception handler"""
+import logging;
 from django.http import JsonResponse;
 from rest_framework.views import exception_handler;
 from rest_framework.response import Response;
 from rest_framework.exceptions import APIException, ValidationError, NotFound;
 from rest_framework.status import HTTP_404_NOT_FOUND;
+
+logger = logging.getLogger(__name__);
 
 def global_exception_handler(exception, context):
 	"""Custom global exception handler that will output HTTP and Server errors"""
@@ -19,8 +22,10 @@ def global_exception_handler(exception, context):
 	elif isinstance(exception, APIException):
 		response.data["message"] = exception.detail;
 	elif isinstance(exception.args[0], int):
+		logger.error("Error Code - " + str(exception.args[0]) + ": " + exception.args[1]);
 		response.data["message"] = "Something went wrong while querying the database";
 	else:
+		logger.error(exception.args[0]);
 		response.data["message"] = exception.args[0];
 
 	if "detail" in response.data:

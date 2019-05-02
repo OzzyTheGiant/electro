@@ -2,7 +2,6 @@ import os;
 import sys;
 import base64;
 import logging;
-import colorlog;
 from datetime import timedelta;
 from logging.config import dictConfig;
 

@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
+import logging
 import base64
+
+environment = os.getenv("APP_ENV");
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = base64.b64decode(os.getenv("APP_KEY").split(":")[1]);
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("APP_ENV") == "local"
+DEBUG = environment == "local"
 
 ALLOWED_HOSTS = ["electro", "localhost", "127.0.0.1"]
 
@@ -85,7 +89,7 @@ SESSION_FILE_PATH = os.getenv("DJANGO_SESSION_FILE_PATH")
 SESSION_COOKIE_AGE = int(os.getenv("SESSION_LIFETIME")) * 60
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE")
-SESSION_COOKIE_SECURE = os.getenv("APP_ENV") != "local"
+SESSION_COOKIE_SECURE = environment != "local"
 
 # CSRF
 # Note: When using CSRF sessions, use ensure_csrf_cookie since the only other way to
@@ -165,4 +169,49 @@ REST_FRAMEWORK = {
 	"DEFAULT_AUTHENTICATION_CLASSES":[
 		"rest_framework.authentication.SessionAuthentication"
 	]
+}
+
+LOGGING = {
+	"version":1,
+	"disable_existing_logger":False,
+	"formatters":{
+		'standard':{
+			'class':'logging.Formatter',
+			'format': '[%(asctime)s] %(levelname)s - %(module)s: %(message)s; Metadata:%(args)s'
+		},
+		'colored':{
+			'class':'colorlog.ColoredFormatter',
+			'format': '[%(asctime)s] %(log_color)s%(levelname)s%(reset)s - %(module)s: %(message)s; Metadata:%(args)s'
+		}
+	},
+	'handlers':{
+		'console':{
+			"class":"logging.StreamHandler" if environment != 'local' else "colorlog.StreamHandler",
+			"stream":sys.stdout,
+			"formatter":"standard" if environment != 'local' else 'colored',
+			"level":logging.DEBUG
+		},
+		'file':{
+			"class":"logging.FileHandler",
+			"filename":os.getcwd() + "/logs/application.log",
+			"formatter":'standard',
+			"level":logging.WARNING
+		},
+	},
+	'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False, # prevent duplicate log records
+        },
+		'django_app.application.exceptions': {
+			'handlers': ['console', 'file'],
+			'level': 'DEBUG',
+			'propagate': False
+		}
+    },
+	'root':{
+		'level':'DEBUG',
+		'handlers':['console', 'file']
+	}
 }
