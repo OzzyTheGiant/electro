@@ -49,6 +49,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django_app.application.middleware.CSRFCookieMiddleware'
+]
+
+PASSWORD_HASHERS = [
+	'django.contrib.auth.hashers.BCryptPasswordHasher',
+	'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
 ]
 
 ROOT_URLCONF = 'django_app.urls'
@@ -70,6 +77,29 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'django_app.wsgi.application'
+
+# Sessions
+
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = os.getenv("DJANGO_SESSION_FILE_PATH")
+SESSION_COOKIE_AGE = int(os.getenv("SESSION_LIFETIME")) * 60
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_NAME = os.getenv("SESSION_COOKIE")
+SESSION_COOKIE_SECURE = os.getenv("APP_ENV") != "local"
+
+# CSRF
+# Note: When using CSRF sessions, use ensure_csrf_cookie since the only other way to
+# get token is by rendering it into an html template 
+CSRF_USE_SESSIONS = True
+# the following setting is for the csrf token cookie when CSRF_USE_SESSIONS = False,
+# however, if using sessions, use your own custom middleware to set the cookie, as ensure_csrf_cookie only puts out session cookie,
+# plus this will be necessary for validating logins with tokens
+CSRF_COOKIE_NAME = os.getenv("XSRF_COOKIE")
+# Make sure the token header is written like this here in the settings, otherwise, django won't find the token
+CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
+CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE
+CSRF_COOKIE_AGE = SESSION_COOKIE_AGE
+CSRF_TOKEN_HTTPONLY = False
 
 
 # Database
@@ -107,6 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "application.User"
 
+AUTHENTICATION_BACKENDS = ["django_app.application.authentication.APIBackend"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -130,5 +161,8 @@ STATIC_URL = '/static/'
 APPEND_SLASH = False;
 
 REST_FRAMEWORK = {
-	"EXCEPTION_HANDLER":"django_app.application.exceptions.global_exception_handler"
+	"EXCEPTION_HANDLER":"django_app.application.exceptions.global_exception_handler",
+	"DEFAULT_AUTHENTICATION_CLASSES":[
+		"rest_framework.authentication.SessionAuthentication"
+	]
 }

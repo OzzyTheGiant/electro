@@ -24,7 +24,10 @@ router = DefaultRouter(trailing_slash = False);
 router.register(r'bills', views.BillViewSet);
 
 urlpatterns = [
-	path("api/", include(router.urls)),
+	path("api", views.home),
+	path('api/login', views.LoginView.as_view()),
+	path('api/logout', views.LogoutView.as_view()),
+	path("api/", include(router.urls))
 ];
 
 handler404 = url_not_found_error_handler;

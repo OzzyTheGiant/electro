@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
 	"""JSON serializer for User model"""
 	class Meta:
 		model = User;
-		fields = ('ID', 'Username', 'Password');
+		fields = ('ID', 'Username');
 
 
 class BillSerializer(serializers.ModelSerializer):

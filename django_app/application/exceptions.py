@@ -2,7 +2,7 @@
 from django.http import JsonResponse;
 from rest_framework.views import exception_handler;
 from rest_framework.response import Response;
-from rest_framework.exceptions import APIException, ValidationError;
+from rest_framework.exceptions import APIException, ValidationError, NotFound;
 from rest_framework.status import HTTP_404_NOT_FOUND;
 
 def global_exception_handler(exception, context):
