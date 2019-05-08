@@ -29,6 +29,36 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/c5b4c491aecb72e7c32a78da0b5c6b9cda8dee0f/gson-2.8.5-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/f645ed69d595b24d4cf8b3fbb64cc505bede8829/gson-2.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.11.11/f375b8946b57e741c614d5702ced0b508b8b5d52/jooq-3.11.11-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.11.11/d22ddece9cc7dda613043c1afdf30310180f08f2/jooq-3.11.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/io.github.cdimascio/java-dotenv/5.0.1/5b924590ea502639bff3f750deb722de4f10e147/java-dotenv-5.0.1-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/io.github.cdimascio/java-dotenv/5.0.1/a9f30f4b81bfe547e2779246f990a9478a79433b/java-dotenv-5.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.11/c790841f886ed40601887d1dbce55db8687321f4/mysql-connector-java-8.0.11-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.11/2c3d25fe1dfdd6496e0bbe47d67809f67487cfba/mysql-connector-java-8.0.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/3.3.1/a07e625a4d4be931217488f8f7bb8a25f0b6d7e0/HikariCP-3.3.1-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/3.3.1/bb447db60818ecfdbb1b99e7bd096ba7a252d91a/HikariCP-3.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.2.Final/604e1101cb261c61200bfd655dfc1aa5aeca36d6/hibernate-jpa-2.1-api-1.0.2.Final-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.2.Final/52afb5762c704a6b586e27742470c08f91877fc1/hibernate-jpa-2.1-api-1.0.2.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -99,6 +129,16 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.12/614c7681949a44e0884a1745ac21c4eb6811c019/jaxb-api-2.2.12-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.12/4c83805595b15acf41d71d49e3add7c0e85baaed/jaxb-api-2.2.12.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.21/b8815e48fb45e94821287365bd9ce8623f459ac7/kotlin-stdlib-1.3.21-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.21/4bcc2012b84840e19e1e28074284cac908be0295/kotlin-stdlib-1.3.21.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/ab3976d4574c48d22dc1abf6a9e8bd0fdf928223/javax.servlet-api-3.1.0-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/3cd63d075497751784b2fa84be59432f4905bf7c/javax.servlet-api-3.1.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -139,7 +179,22 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.21/224a3bcfa1c088dd5d7c4a3958a68427b44c65dc/kotlin-stdlib-common-1.3.21-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.21/f30e4a9897913e53d778f564110bafa1fef46643/kotlin-stdlib-common-1.3.21.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/5991ca87ef1fb5544943d9abc5a9a37583fabe03/annotations-13.0-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.15.v20190215/c5fa479cb575b142831451ffbda1290fcef0ab60/jetty-util-9.4.15.v20190215-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.15.v20190215/842cb29911d32c18c9e6fa377cabfbc4685f4bb2/jetty-util-9.4.15.v20190215.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.6.0/194303f1352442121424c408d9affa2c352a9437/protobuf-java-2.6.0-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/2.6.0/88ba32feefe385d5dc284b71f649201eabd15778/protobuf-java-2.6.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

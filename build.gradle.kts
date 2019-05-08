@@ -39,6 +39,12 @@ dependencies {
     implementation("com.google.guava:guava:27.0.1-jre")
 	implementation("com.sparkjava:spark-core:2.9.0")
 	implementation("org.slf4j:slf4j-simple:1.7.25")
+	implementation("com.google.code.gson:gson:2.8.5")
+	implementation("org.jooq:jooq:3.11.11")
+	implementation("io.github.cdimascio:java-dotenv:5.0.1")
+	implementation("mysql:mysql-connector-java:8.0.11")
+	implementation("com.zaxxer:HikariCP:3.3.1")
+	implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
 
     // Use JUnit test framework
 	testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
