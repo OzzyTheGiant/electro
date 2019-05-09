@@ -1,12 +1,14 @@
 package electro.models;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import javax.persistence.Column;
 
 public class Bill {
 	@Column(name = "ID") private int id;
 	@Column(name = "User") private int user;
-	@Column(name = "PaymentAmount") private double paymentAmount;
-	@Column(name = "PaymentDate") private String paymentDate;
+	@Column(name = "PaymentAmount") private BigDecimal paymentAmount;
+	@Column(name = "PaymentDate") private Date paymentDate;
 
 	public int getId() {
 		return this.id;
@@ -24,40 +26,19 @@ public class Bill {
 		this.user = user;
 	}
 
-	public double getPaymentAmount() {
+	public BigDecimal getPaymentAmount() {
 		return this.paymentAmount;
 	}
 
-	public void setPaymentAmount(double paymentAmount) {
+	public void setPaymentAmount(BigDecimal paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
 
-	public String getPaymentDate() {
+	public Date getPaymentDate() {
 		return this.paymentDate;
 	}
 
-	public void setPaymentDate(String paymentDate) {
+	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
 	}
-
-	public Bill id(int id) {
-		this.id = id;
-		return this;
-	}
-
-	public Bill user(int user) {
-		this.user = user;
-		return this;
-	}
-
-	public Bill paymentAmount(double paymentAmount) {
-		this.paymentAmount = paymentAmount;
-		return this;
-	}
-
-	public Bill paymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
-		return this;
-	}
-	
 }

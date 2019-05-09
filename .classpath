@@ -3,7 +3,7 @@
 	<classpathentry output="bin/main" kind="src" path="spark/src">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
+			<attribute name="gradle_used_by_scope" value="main"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry output="bin/test" kind="src" path="spark/test">
@@ -34,7 +34,12 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.11.11/f375b8946b57e741c614d5702ced0b508b8b5d52/jooq-3.11.11-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.11.11/d22ddece9cc7dda613043c1afdf30310180f08f2/jooq-3.11.11.jar">
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq-meta/3.10.1/d45ebd5e330133a9742294fc0898c4b7b51e71ed/jooq-meta-3.10.1-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq-meta/3.10.1/712b22801aa3c0cba92680c1be9c0aae5e651284/jooq-meta-3.10.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.10.1/42ebf1f6a1fadd92ee422265c649f171fc321425/jooq-3.10.1-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.jooq/jooq/3.10.1/1500413e1fb0f324f0a8604f2fa1b4099f9dd05d/jooq-3.10.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -55,6 +60,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.2.Final/604e1101cb261c61200bfd655dfc1aa5aeca36d6/hibernate-jpa-2.1-api-1.0.2.Final-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.2.Final/52afb5762c704a6b586e27742470c08f91877fc1/hibernate-jpa-2.1-api-1.0.2.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/65dfd2c47380bf72ec62a5b8c4ceb78a4eda1a53/javax.annotation-api-1.3.2-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/934c04d3cfef185a8008e7bf34331b79730a9d43/javax.annotation-api-1.3.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -125,11 +135,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-servlet/9.4.15.v20190215/e0e543ef7ca746571d01b13507c70fb0387c7069/websocket-servlet-9.4.15.v20190215-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-servlet/9.4.15.v20190215/544090f9a7083fe7794d4669893f7f7e593d0534/websocket-servlet-9.4.15.v20190215.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.12/614c7681949a44e0884a1745ac21c4eb6811c019/jaxb-api-2.2.12-sources.jar" kind="lib" path="/Users/Ozzy/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.2.12/4c83805595b15acf41d71d49e3add7c0e85baaed/jaxb-api-2.2.12.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

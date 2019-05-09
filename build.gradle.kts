@@ -5,17 +5,34 @@
  * For more details take a look at the Java Quickstart chapter in the Gradle
  * User Manual available at https://docs.gradle.org/5.4.1/userguide/tutorial_java_projects.html
  */
+import com.rohanprabhu.gradle.plugins.kdjooq.generator
+import com.rohanprabhu.gradle.plugins.kdjooq.jdbc
+import com.rohanprabhu.gradle.plugins.kdjooq.jooqCodegenConfiguration
+import com.rohanprabhu.gradle.plugins.kdjooq.target
+
+val db_username: String by project
+val db_password: String by project
 
 plugins {
     // Apply the java plugin to add support for Java
     java
 	eclipse
+	id("com.rohanprabhu.kotlin-dsl-jooq") version "0.3.1" // jooq code generator
 }
 
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+}
+
+buildscript { // this is needed for Java 9+, and specifically, for jooq code generator
+    dependencies {
+        classpath("com.sun.xml.bind:jaxb-core:2.3.0.1")
+        classpath("com.sun.xml.bind:jaxb-impl:2.3.0.1")
+        classpath("javax.activation:activation:1.1.1")
+        classpath("javax.xml.bind:jaxb-api:2.3.0")
+    }
 }
 
 sourceSets {
@@ -35,17 +52,46 @@ sourceSets {
 }
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
     implementation("com.google.guava:guava:27.0.1-jre")
 	implementation("com.sparkjava:spark-core:2.9.0")
-	implementation("org.slf4j:slf4j-simple:1.7.25")
+	implementation("org.slf4j:slf4j-simple:1.7.25") // spark's logger
 	implementation("com.google.code.gson:gson:2.8.5")
-	implementation("org.jooq:jooq:3.11.11")
+	implementation("org.jooq:jooq:3.11.11") // sql query builder
+	implementation("org.jooq:jooq-meta:3.11.11") // needed by jooq code generator to find database metadata
 	implementation("io.github.cdimascio:java-dotenv:5.0.1")
-	implementation("mysql:mysql-connector-java:8.0.11")
-	implementation("com.zaxxer:HikariCP:3.3.1")
-	implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
+	implementation("mysql:mysql-connector-java:8.0.11") // mysql driver
+	implementation("com.zaxxer:HikariCP:3.3.1") // db connection pooling
+	implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final") // for model annotations
+	implementation("javax.annotation:javax.annotation-api:1.3.2") // for @Generated annotation in jooq's generated classes
+
+	// add database driver to jooq code generator classpath
+	jooqGeneratorRuntime("mysql:mysql-connector-java:8.0.11")
+	// the following dependencies are for the jooq code generator, if working on Java 9+
+	jooqGeneratorRuntime("javax.activation:activation:1.1.1")
+    jooqGeneratorRuntime("javax.xml.bind:jaxb-api:2.3.0")
+    jooqGeneratorRuntime("com.sun.xml.bind:jaxb-core:2.3.0.1")
+    jooqGeneratorRuntime("com.sun.xml.bind:jaxb-impl:2.3.0.1")
 
     // Use JUnit test framework
 	testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
+}
+
+jooqGenerator {
+	configuration("primary", sourceSets.getByName("main")) {
+        configuration = jooqCodegenConfiguration {
+            jdbc = jdbc {
+                username = db_username
+                password = db_password
+                driver   = "com.mysql.cj.jdbc.Driver"
+                url      = "jdbc:mysql://localhost:3306/Electro?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=America/Chicago"
+                schema   = "INFORMATION_SCHEMA"
+            }
+            generator = generator {
+                target = target {
+                    packageName = "jooq.generated"
+                    directory   = "spark"
+                }
+            }
+        }
+    }
 }
