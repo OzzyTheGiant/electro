@@ -18,12 +18,14 @@ public class App {
     public static void main(String[] args) {
 		port(4567);
 
+		before((request, response) -> {
+			if (request.requestMethod() != "DELETE") response.type("application/json");
+		});
+
 		get(Routes.BILLS_URL, BillController.getAllBills);
 		post(Routes.BILLS_URL, BillController.addNewBill);
-
-		after((request, response) -> {
-			response.type("application/json");
-		});
+		put(Routes.BILLS_URL + "/:id", BillController.updateBill);
+		delete(Routes.BILLS_URL + "/:id", BillController.deleteBill);
 
 		Runtime.getRuntime().addShutdownHook(shutdownEventHandler);
 	}

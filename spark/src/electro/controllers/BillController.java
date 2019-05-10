@@ -12,10 +12,21 @@ public class BillController {
 	};
 
 	public static Route addNewBill = (request, response) -> {
-		var json = request.body();
-		var bill = gson.fromJson(json, Bill.class);
+		var bill = gson.fromJson(request.body(), Bill.class);
 		bill = BillDatabaseService.insertNewBill(bill);
 		response.status(201);
 		return gson.toJson(bill);
+	};
+
+	public static Route updateBill = (request, response) -> {
+		var bill = gson.fromJson(request.body(), Bill.class);
+		BillDatabaseService.updateBill(Integer.parseInt(request.params(":id")), bill);
+		return request.body();
+	};
+
+	public static Route deleteBill = (request, response) -> {
+		BillDatabaseService.deleteBill(Integer.parseInt(request.params(":id")));
+		response.status(204);
+		return "";
 	};
 }
