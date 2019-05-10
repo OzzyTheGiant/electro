@@ -20,7 +20,7 @@ public class App {
 
 		get(Routes.BILLS_URL, BillController.getAllBills);
 		post(Routes.BILLS_URL, BillController.addNewBill);
-		
+
 		after((request, response) -> {
 			response.type("application/json");
 		});
@@ -30,6 +30,7 @@ public class App {
 
 	public static <T> Gson createGson() {
 		var gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("yyyy-MM-dd");
 		gsonBuilder.registerTypeAdapter(Bill.class, new BillDeserializer());
 		return gsonBuilder.create();
 	}
