@@ -6,12 +6,11 @@ import com.zaxxer.hikari.HikariDataSource;
 import static electro.App.env;
 
 public class DatabaseAccessor {
-	private final String CONNECTION_STRING = "jdbc:%1$s://%2$s:%3$s/%4$s?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=%5$s";
 	private final HikariDataSource datasource = new HikariDataSource();
 
 	public DatabaseAccessor() {
 		var url = String.format(
-			CONNECTION_STRING, 
+			env.get("JDBC_CONN_STRING_TEMPLATE"), 
 			env.get("DB_CONNECTION"), 
 			env.get("DB_HOST"),
 			env.get("DB_PORT"), 
