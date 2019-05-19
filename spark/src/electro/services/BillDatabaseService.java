@@ -28,7 +28,7 @@ public class BillDatabaseService {
 		} catch (Exception e) { throw e; }
 	}
 
-	public static Bill updateBill(int id, Bill bill) throws SQLException {
+	public static Bill updateBill(Bill bill) throws SQLException {
 		try (var connection = db.getConnection()) {
 			var billRecord = DSL.using(connection).newRecord(BILLS, bill);
 			DSL.using(connection).executeUpdate(billRecord);

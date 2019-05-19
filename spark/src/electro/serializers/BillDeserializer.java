@@ -14,12 +14,24 @@ public class BillDeserializer implements JsonDeserializer<Bill> {
 	public Bill deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		var bill = new Bill();
 		var jsonObject = json.getAsJsonObject();
-		LocalDate localDate = LocalDate.parse(jsonObject.get("PaymentDate").getAsString());
-		bill.setPaymentDate(Date.valueOf(localDate));
-		bill.setPaymentAmount(jsonObject.get("PaymentAmount").getAsBigDecimal());
-		bill.setUser(jsonObject.get("User").getAsInt());
-		var id = jsonObject.get("ID");
-		if (id != null) bill.setId(id.getAsInt());
+		for (var property : jsonObject.keySet()) {
+			bill = getValueOrNull(bill, property, jsonObject.get(property));
+		} return bill;
+	}
+
+	private Bill getValueOrNull(Bill bill, String key, JsonElement property) {
+		switch(key) {
+			case "ID": 
+				bill.setId(property != null ? property.getAsInt() : 0); break;
+			case "User": 
+				bill.setUser(property != null ? property.getAsInt() : null); break;
+			case "PaymentAmount": 
+				bill.setPaymentAmount(property != null ? property.getAsBigDecimal() : null); break;
+			case "PaymentDate":
+				if (property == null) break;
+				LocalDate localDate = LocalDate.parse(property.getAsString());
+				bill.setPaymentDate(Date.valueOf(localDate));
+		}
 		return bill;
 	}
 }

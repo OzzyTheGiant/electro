@@ -63,6 +63,10 @@ dependencies {
 	implementation("com.zaxxer:HikariCP:3.3.1") // db connection pooling
 	implementation("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final") // for model annotations
 	implementation("javax.annotation:javax.annotation-api:1.3.2") // for @Generated annotation in jooq's generated classes
+	implementation("org.hibernate.validator:hibernate-validator:6.0.16.Final") // for validating our models after deserialization
+	implementation("org.hibernate.validator:hibernate-validator-annotation-processor:6.0.16.Final") // for processing validation annotations on models
+	implementation("javax.el:javax.el-api:3.0.1-b06") // for variable interpolation in validation error messages
+	implementation("org.glassfish.web:javax.el:2.2.6") // reference implementation for above
 
 	// add database driver to jooq code generator classpath
 	jooqGeneratorRuntime("mysql:mysql-connector-java:8.0.11")
