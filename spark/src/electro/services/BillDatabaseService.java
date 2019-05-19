@@ -3,6 +3,8 @@ package electro.services;
 import java.sql.SQLException;
 import java.util.List;
 import org.jooq.impl.DSL;
+
+import electro.exceptions.NotFoundException;
 import electro.models.Bill;
 import static electro.App.db;
 import static jooq.generated.tables.Bills.BILLS;
@@ -28,20 +30,22 @@ public class BillDatabaseService {
 		} catch (Exception e) { throw e; }
 	}
 
-	public static Bill updateBill(Bill bill) throws SQLException {
+	public static Bill updateBill(Bill bill) throws SQLException, NotFoundException {
 		try (var connection = db.getConnection()) {
 			var billRecord = DSL.using(connection).newRecord(BILLS, bill);
-			DSL.using(connection).executeUpdate(billRecord);
+			var updated = DSL.using(connection).executeUpdate(billRecord);
+			if (!(updated > 0)) {
+				throw new NotFoundException("bill");
+			}
 			return bill;
 		} catch (Exception e) { throw e; }
 	}
 
-	public static void deleteBill(int id) throws SQLException {
+	public static void deleteBill(int id) throws SQLException, NotFoundException {
 		try(var connection = db.getConnection()) {
 			var deleted = DSL.using(connection).delete(BILLS).where(BILLS.ID.eq(id)).execute();
 			if (!(deleted > 0)) {
-				// TODO: implement not found exception
-				throw new SQLException("The specified bill could not be found");
+				throw new NotFoundException("bill");
 			}
 		} catch (Exception e) { throw e; }
 	}
