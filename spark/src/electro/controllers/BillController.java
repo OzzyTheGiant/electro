@@ -4,6 +4,8 @@ import electro.models.Bill;
 import electro.services.BillDatabaseService;
 import spark.Route;
 import java.time.format.DateTimeParseException;
+
+import electro.exceptions.EmptyRequestBodyException;
 import electro.exceptions.ValidationException;
 import static electro.App.gson;
 import static electro.App.validator;
@@ -35,8 +37,12 @@ public class BillController {
 		return "";
 	};
 
-	private static Bill processJSON(String json) throws ValidationException {
+	private static Bill processJSON(String json) 
+		throws ValidationException, EmptyRequestBodyException {
 		try {
+			if (json.equals("")) {
+				throw new EmptyRequestBodyException();
+			}
 			var bill = gson.fromJson(json, Bill.class);
 			var message = validator.validate(bill);
 			if (message != "") {
