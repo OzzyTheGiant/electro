@@ -9,8 +9,10 @@ import electro.models.Bill;
 import electro.serializers.BillDeserializer;
 import electro.services.ValidationService;
 import electro.exceptions.HttpException;
+import electro.exceptions.NotFoundException;
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.ExceptionHandler;
+import spark.Route;
 
 public class App {
 	// App dependencies
@@ -31,13 +33,16 @@ public class App {
 		put(Routes.BILLS_URL + "/:id", BillController.updateBill);
 		delete(Routes.BILLS_URL + "/:id", BillController.deleteBill);
 
-		// notFound((request, response) -> {
-
-		// });
+		notFound(notFoundErrorHandler);
 		exception(Exception.class, exceptionHandler);
 
 		Runtime.getRuntime().addShutdownHook(shutdownEventHandler);
 	}
+
+	public static Route notFoundErrorHandler = (request, response) -> {
+		response.type("application/json");
+		return "{\"message\": \"The specifed API route or page could not be found\"}";
+	};
 
 	public static ExceptionHandler<Exception> exceptionHandler = (exception, request, response) -> {
 		var statusCode = 500;
