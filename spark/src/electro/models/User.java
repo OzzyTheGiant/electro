@@ -1,11 +1,15 @@
 package electro.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.google.gson.annotations.Expose;
 
-public class User {
+public class User implements Serializable {
+	private static transient final long serialVersionUID = -6586257090826961044L;
+
 	@Column(name = "ID")
 	@Expose
 	private int id;
