@@ -33,8 +33,6 @@ public class LoginController {
 
 	public static Route logout = (request, response) -> {
 		request.session(false).invalidate();
-		User user = request.session(true).attribute("current_user");
-		System.out.println(user == null ? null : user.getUsername());
 		request.session(true).maxInactiveInterval(SESSION_LIFETIME);
 		return "";
 	};
