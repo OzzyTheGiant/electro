@@ -67,6 +67,7 @@ dependencies {
 	implementation("org.hibernate.validator:hibernate-validator-annotation-processor:6.0.16.Final") // for processing validation annotations on models
 	implementation("javax.el:javax.el-api:3.0.1-b06") // for variable interpolation in validation error messages
 	implementation("org.glassfish.web:javax.el:2.2.6") // reference implementation for above
+	implementation("org.mindrot:jbcrypt:0.4") // password hashing and verification for log ins
 
 	// add database driver to jooq code generator classpath
 	jooqGeneratorRuntime("mysql:mysql-connector-java:8.0.11")

@@ -3,13 +3,13 @@ package electro;
 import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import electro.controllers.LoginController;
 import electro.controllers.BillController;
 import electro.database.DatabaseAccessor;
 import electro.models.Bill;
 import electro.serializers.BillDeserializer;
 import electro.services.ValidationService;
 import electro.exceptions.HttpException;
-import electro.exceptions.NotFoundException;
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.ExceptionHandler;
 import spark.Route;
@@ -28,11 +28,18 @@ public class App {
 			if (request.requestMethod() != "DELETE") response.type("application/json");
 		});
 
+		// Login session routes
+		get(Routes.ROOT_URL, LoginController.home);
+		post(Routes.LOGIN_URL, LoginController.login);
+		post(Routes.LOGOUT_URL, LoginController.logout);
+
+		// Bill API routes
 		get(Routes.BILLS_URL, BillController.getAllBills);
 		post(Routes.BILLS_URL, BillController.addNewBill);
 		put(Routes.BILLS_URL + "/:id", BillController.updateBill);
 		delete(Routes.BILLS_URL + "/:id", BillController.deleteBill);
 
+		// Error handlers
 		notFound(notFoundErrorHandler);
 		exception(Exception.class, exceptionHandler);
 
@@ -59,6 +66,7 @@ public class App {
 
 	public static <T> Gson createGson() {
 		var gsonBuilder = new GsonBuilder();
+		gsonBuilder.excludeFieldsWithoutExposeAnnotation();
 		gsonBuilder.setDateFormat("yyyy-MM-dd");
 		gsonBuilder.registerTypeAdapter(Bill.class, new BillDeserializer());
 		return gsonBuilder.create();
