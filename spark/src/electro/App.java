@@ -13,6 +13,7 @@ import electro.exceptions.HttpException;
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.ExceptionHandler;
 import spark.Route;
+import electro.JettyServer;
 
 public class App {
 	// App dependencies
@@ -22,11 +23,12 @@ public class App {
 	public static final ValidationService validator = new ValidationService();
 
     public static void main(String[] args) {
+		// create custom Jetty server class to customize session config
+		JettyServer.create();
 		port(4567);
 
-		before((request, response) -> {
-			if (request.requestMethod() != "DELETE") response.type("application/json");
-		});
+		// Middleware functions
+		before(Middleware.setContentType);
 
 		// Login session routes
 		get(Routes.ROOT_URL, LoginController.home);
