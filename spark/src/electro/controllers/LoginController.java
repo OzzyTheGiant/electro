@@ -15,6 +15,7 @@ public class LoginController {
 		if (request.cookie("electro") == null) {
 			request.session(true).maxInactiveInterval(SESSION_LIFETIME);
 		}
+		response.status(204);
 		return "";
 	};
 	
@@ -34,6 +35,7 @@ public class LoginController {
 	public static Route logout = (request, response) -> {
 		request.session(false).invalidate();
 		request.session(true).maxInactiveInterval(SESSION_LIFETIME);
+		response.status(204);
 		return "";
 	};
 }

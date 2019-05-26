@@ -29,6 +29,7 @@ public class App {
 
 		// Middleware functions
 		before(Middleware.setContentType);
+		before(Middleware.checkCSRFToken);
 
 		// Login session routes
 		get(Routes.ROOT_URL, LoginController.home);
@@ -40,6 +41,9 @@ public class App {
 		post(Routes.BILLS_URL, BillController.addNewBill);
 		put(Routes.BILLS_URL + "/:id", BillController.updateBill);
 		delete(Routes.BILLS_URL + "/:id", BillController.deleteBill);
+
+		// Post-Route Middleware
+		after(Middleware.createCSRFTokenCookie);
 
 		// Error handlers
 		notFound(notFoundErrorHandler);
