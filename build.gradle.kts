@@ -54,7 +54,8 @@ sourceSets {
 dependencies {
     implementation("com.google.guava:guava:27.0.1-jre")
 	implementation("com.sparkjava:spark-core:2.9.0")
-	implementation("org.slf4j:slf4j-simple:1.7.25") // spark's logger
+	implementation("org.apache.logging.log4j:log4j-core:2.11.2") // logger
+	implementation("org.slf4j:slf4j-simple:1.7.25") // the logging implementation that jetty server uses internally
 	implementation("com.google.code.gson:gson:2.8.5")
 	implementation("org.jooq:jooq:3.11.11") // sql query builder
 	implementation("org.jooq:jooq-meta:3.11.11") // needed by jooq code generator to find database metadata

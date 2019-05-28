@@ -1,11 +1,14 @@
 package electro;
 
+import java.io.File;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.util.thread.ThreadPool;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.FileSessionDataStore;
 import org.eclipse.jetty.server.session.SessionDataStore;
+import org.eclipse.jetty.util.log.Log;
 import spark.ExceptionMapper;
 import spark.embeddedserver.EmbeddedServerFactory;
 import spark.embeddedserver.EmbeddedServers;
@@ -16,8 +19,7 @@ import spark.http.matching.MatcherFilter;
 import spark.route.Routes;
 import spark.staticfiles.StaticFilesConfiguration;
 import static electro.App.env;
-
-import java.io.File;
+import static electro.App.logger;
 
 public class JettyServer {
 	public static EmbeddedServerFactory embeddedServerFactory = 
@@ -63,9 +65,10 @@ public class JettyServer {
 		};
 		return new EmbeddedJettyServer(serverFactory, handler);
 	};
-
+	
 	public static void create() {
 		EmbeddedServers.add(EmbeddedServers.Identifiers.JETTY, embeddedServerFactory);
+		logger.info("Jetty embedded server with custom session handler created");
 	}
 
 	private static SessionDataStore getDataStore() {
