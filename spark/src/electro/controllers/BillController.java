@@ -4,7 +4,6 @@ import electro.models.Bill;
 import electro.services.BillDatabaseService;
 import spark.Route;
 import java.time.format.DateTimeParseException;
-
 import electro.exceptions.EmptyRequestBodyException;
 import electro.exceptions.ValidationException;
 import static electro.App.gson;

@@ -3,7 +3,6 @@ package electro.services;
 import java.sql.SQLException;
 import java.util.List;
 import org.jooq.impl.DSL;
-
 import electro.exceptions.DatabaseException;
 import electro.exceptions.NotFoundException;
 import electro.models.Bill;
