@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using electro.Database;
 using electro.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace electro.Controllers {
     [Route("api/bills")]
@@ -17,20 +18,34 @@ namespace electro.Controllers {
 		}
 
         [HttpGet]
-        public IEnumerable<Bill> GetAllBills() {
-            return dbContext.Bills;
+        public async Task<IEnumerable<Bill>> GetAllBills() {
+            return await dbContext.Bills.ToListAsync();
         }
 
         [HttpPost]
-        public void Post([FromBody] Bill bill) {
+        public async Task<ActionResult<Bill>> Post([FromBody] Bill bill) {
+			dbContext.Add(bill);
+			await dbContext.SaveChangesAsync();
+			return CreatedAtAction(nameof(GetAllBills), new {}, bill);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) {
+        public async Task<ActionResult<Bill>> Put(int id, [FromBody] Bill bill) {
+			bill.Id = id;
+			dbContext.Update(bill);
+			await dbContext.SaveChangesAsync();
+			return bill;
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id) {
+        public async Task<IActionResult> Delete(int id) {
+			var bill = await dbContext.Bills.FindAsync(id);
+			if (bill == null) {
+				return NotFound();
+			}
+			dbContext.Bills.Remove(bill);
+			await dbContext.SaveChangesAsync();
+			return NoContent();
         }
     }
 }
