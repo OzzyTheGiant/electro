@@ -58,6 +58,7 @@ namespace electro {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             else app.UseHsts();
+			app.UseExceptionHandler("/errors/500");
 			app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseMvc();
         }

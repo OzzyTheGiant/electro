@@ -24,6 +24,10 @@ namespace electro.Controllers {
 			HttpException error;
             switch(code) {
 				case 400: error = new ValidationException("The data provided is invalid"); break;
+				case 404: error = new NotFoundException("url"); break;
+				// Note: a custom DatabaseException class may not be needed since any unhandled errors will
+				// be logged in UseExceptionHandler middleware before coming here, so just output
+				// generic server error
 				default: error = new HttpException(); break;
 			} return new ObjectResult(error);
         }

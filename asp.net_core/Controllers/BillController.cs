@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using electro.Database;
+using electro.Exceptions;
 using electro.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,17 +32,23 @@ namespace electro.Controllers {
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Bill>> Put(int id, [FromBody] Bill bill) {
-			bill.Id = id;
-			dbContext.Update(bill);
-			await dbContext.SaveChangesAsync();
-			return bill;
+			int rowsAffected = 0;
+			try {
+				bill.Id = id;
+				dbContext.Update(bill);
+				rowsAffected = await dbContext.SaveChangesAsync();
+				return bill;
+			} catch (DbUpdateConcurrencyException e) {
+				if (rowsAffected == 0) return new NotFoundObjectResult(new NotFoundException("bill"));
+				else throw e;
+			}
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
 			var bill = await dbContext.Bills.FindAsync(id);
 			if (bill == null) {
-				return NotFound();
+				return new NotFoundObjectResult(new NotFoundException("bill"));
 			}
 			dbContext.Bills.Remove(bill);
 			await dbContext.SaveChangesAsync();
