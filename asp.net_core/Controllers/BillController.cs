@@ -24,14 +24,14 @@ namespace electro.Controllers {
         }
 
         [HttpPost]
-        public async Task<ActionResult<Bill>> Post([FromBody] Bill bill) {
+        public async Task<ActionResult<Bill>> AddNewBill([FromBody] Bill bill) {
 			dbContext.Add(bill);
 			await dbContext.SaveChangesAsync();
 			return CreatedAtAction(nameof(GetAllBills), new {}, bill);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Bill>> Put(int id, [FromBody] Bill bill) {
+        public async Task<ActionResult<Bill>> UpdateBill(int id, [FromBody] Bill bill) {
 			int rowsAffected = 0;
 			try {
 				bill.Id = id;
@@ -45,7 +45,7 @@ namespace electro.Controllers {
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id) {
+        public async Task<IActionResult> DeleteBill(int id) {
 			var bill = await dbContext.Bills.FindAsync(id);
 			if (bill == null) {
 				return new NotFoundObjectResult(new NotFoundException("bill"));
