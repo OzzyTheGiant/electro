@@ -87,23 +87,11 @@ namespace electro {
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline (Middlewares)
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
         {
+			// The default HSTS value is 30 days. You may want to change this for production scenarios
             if (!env.IsDevelopment()) app.UseHsts();  
 			app.UseGlobalExceptionHandler(); // Custom exception handler for uncaught exceptions
 			app.UseStatusCodePagesWithReExecute("/errors/{0}"); // for when urls are not found or a generic error response is needed
-			app.UseCSRFVerificationMiddleware();
-			// The default HSTS value is 30 days. You may want to change this for production scenarios
-			app.Use(next => context => { // set up csrf middleware
-				var tokens = antiforgery.GetAndStoreTokens(context);
-            	context.Response.Cookies.Append(
-					Environment.GetEnvironmentVariable("XSRF_COOKIE"), 
-					tokens.RequestToken, 
-                	new CookieOptions() { 
-						MaxAge = TimeSpan.FromMinutes(sessionLifetime),
-						HttpOnly = false ,
-						Secure = Environment.GetEnvironmentVariable("APP_ENV") != "local"
-					}
-				); return next(context);
-			});
+			app.UseCSRFManager();
 			app.UseSession();
             app.UseMvc();
         }
