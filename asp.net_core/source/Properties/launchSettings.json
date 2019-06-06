@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "api/bills",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+		"ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "electro": {
@@ -23,7 +23,8 @@
       "launchUrl": "api/bills",
       "applicationUrl": "http://electro:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+		"ASPNETCORE_ENVIRONMENT": "Development",
+		"ENV_FILE":"/Users/Ozzy/Projects/Web Development/_samples/electro/.env"
       }
     }
   }

@@ -46,7 +46,7 @@ namespace electro {
 			// load .env file
 			services.AddEnv(builder => {
 				builder
-					.AddEnvFile("../.env")
+					.AddEnvFile(Environment.GetEnvironmentVariable("ENV_FILE"))
 					.AddThrowOnError(false)
 					.AddEncoding(Encoding.UTF8);
 			});
