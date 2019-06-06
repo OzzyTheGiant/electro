@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Serilog.Extensions.Logging.File" Version="1.0.1" />
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="dotenv.net" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

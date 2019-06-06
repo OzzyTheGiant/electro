@@ -85,8 +85,8 @@ namespace electro {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline (Middlewares)
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IAntiforgery antiforgery, ILoggerFactory loggerFactory) {
+			loggerFactory.AddFile(Environment.GetEnvironmentVariable("LOG_FILE_PATH").Trim(new Char[] {'"'}));
 			// The default HSTS value is 30 days. You may want to change this for production scenarios
             if (!env.IsDevelopment()) app.UseHsts();  
 			app.UseGlobalExceptionHandler(); // Custom exception handler for uncaught exceptions
