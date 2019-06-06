@@ -3,14 +3,17 @@ using System.Threading.Tasks;
 using electro.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace electro.Middleware {
 	public class GlobalExceptionHandler {
 		private readonly RequestDelegate next;
+		private readonly ILogger logger;
 
-		public GlobalExceptionHandler(RequestDelegate next) {
+		public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger) {
 			this.next = next;
+			this.logger = logger;
 		}
 		
 		public async Task InvokeAsync(HttpContext context) {
@@ -18,9 +21,9 @@ namespace electro.Middleware {
 				await next(context);
 			} catch (HttpException e) {
 				await createErrorMessage(e, e.Code, context);
-			} catch (Exception) {
-				// TODO: log exception from object e
+			} catch (Exception e) {
 				var httpException = new HttpException();
+				logger.LogError(500, e, e.Message);
 				await createErrorMessage(httpException, httpException.Code, context);
 			}
 		}
