@@ -38,7 +38,7 @@ namespace electro.Controllers {
 				dbContext.Update(bill);
 				rowsAffected = await dbContext.SaveChangesAsync();
 				return bill;
-			} catch (DbUpdateConcurrencyException e) {
+			} catch (DbUpdateException e) {
 				if (rowsAffected == 0) return new NotFoundObjectResult(new NotFoundException("bill"));
 				else throw e;
 			}
