@@ -3,7 +3,8 @@ using electro.Models;
 	
 namespace electro.Database {
 	public class BillContext : DbContext {
+		public BillContext () {}
 		public BillContext (DbContextOptions<BillContext> options) : base (options) { }
-		public DbSet<Bill> Bills { get; set; }
+		public virtual DbSet<Bill> Bills { get; set; }
 	}
 }
