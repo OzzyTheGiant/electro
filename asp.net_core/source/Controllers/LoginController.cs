@@ -15,9 +15,8 @@ namespace electro.Controllers {
 	[Route("api")]
 	public class LoginController : ControllerBase {
 		private UserContext dbContext;
-		private const string userKey = "current_user";
-
-		private string sessionCookieName = Environment.GetEnvironmentVariable("SESSION_COOKIE");
+		public const string userKey = "current_user";
+		public string sessionCookieName = Environment.GetEnvironmentVariable("SESSION_COOKIE");
 
 		public LoginController(UserContext context) {
 			dbContext = context;
@@ -38,7 +37,9 @@ namespace electro.Controllers {
 					HttpContext.Session.Set<User>(userKey, user);
 					return user;
 				} return new UnauthorizedObjectResult(new AuthenticationException());
-			} catch (ArgumentNullException) {
+			} catch (ArgumentNullException) { // if password was null
+				return new UnauthorizedObjectResult(new AuthenticationException());
+			} catch (InvalidOperationException) { // if username not found
 				return new UnauthorizedObjectResult(new AuthenticationException());
 			}
 		}
@@ -46,7 +47,7 @@ namespace electro.Controllers {
 		[HttpPost("logout")]
 		public ActionResult Logout() {
 			HttpContext.Session.Clear();
-			Response.Cookies.Delete(Environment.GetEnvironmentVariable("SESSION_COOKIE"));
+			Response.Cookies.Delete(sessionCookieName);
 			return NoContent();
 		}
 	}
