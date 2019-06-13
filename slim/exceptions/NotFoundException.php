@@ -1,5 +1,5 @@
 <?php
-namespace Electro\Exceptions;
+namespace Electro\exceptions;
 
 use \Exception;
 
