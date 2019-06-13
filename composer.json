@@ -55,6 +55,7 @@
     "minimum-stability": "dev",
 	"prefer-stable": true,
 	"scripts": {
+		"test-slim":"./vendor/bin/phpunit --bootstrap vendor/autoload.php slim/tests",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php laravel/artisan package:discover --ansi"
