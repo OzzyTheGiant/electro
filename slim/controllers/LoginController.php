@@ -16,7 +16,7 @@ class LoginController {
 
 	private const SESSION_SEGMENT = "Electro";
 
-	public function __construct(ContainerInterface $container) {
+	public function __construct($container) {
 		$this->container = $container;
 	}
 
