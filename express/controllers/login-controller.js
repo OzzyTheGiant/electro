@@ -1,12 +1,11 @@
-const db = require('../database/mysql');
 const bcrypt = require('bcrypt');
 const { addCSRFToken } = require("../middleware/middleware");
 
 class LoginController {
-	// TODO: add CSRF token
+	constructor(db) { this.db = db; }
 
-	static login(request, response, next) {
-		db.select().from(LoginController.tableName).where({Username:request.body.username}).then(user => {
+	login(request, response, next) {
+		this.db.select().from(LoginController.tableName).where({Username:request.body.username}).then(user => {
 			if (user) {
 				bcrypt.compare(request.body.password, user[0].Password).then(result => {
 					if (!result) { // if passwords don't match
@@ -23,7 +22,7 @@ class LoginController {
 		});
 	}
 
-	static logout(request, response, next) {
+	logout(request, response, next) {
 		request.session.regenerate(error => {
 			// must use middleware here since session was recreated
 			addCSRFToken(request, response);
