@@ -2,16 +2,18 @@ const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const logger = require("./express/services/logger");
 const router = require("./express/routes");
-const { sessionConfig } = require("./express/config/session-config");
+const { logger, sessionConfig } = require("./express/config/app-config");
 const { deleteSessionCookie } = require("./express/middleware/middleware");
 const { NotFoundError } = require("./express/exceptions/exceptions");
 
 const app = express();
 
 /* Log server shut down events */
-process.on('SIGINT', () => logger.notice('Server is shutting down manually'));
+process.on('SIGINT', () => {
+	logger.notice('Server is shutting down manually')
+	process.exit(0);
+});
 process.on('exit', code => logger.notice(`Server is shutting down with code ${code}`));
 process.on('uncaughtException', error => {
 	logger.error(error);
@@ -34,6 +36,6 @@ app.use((error, request, response, next) => { // global error handler
 });
 
 /* Start server */
-app.listen(process.env.APP_ENV, function() { 
-	logger.notice("Server listening on port " + process.env.APP_ENV);
+app.listen(process.env.APP_PORT, function() { 
+	logger.notice("Server listening on port " + process.env.APP_PORT);
 });

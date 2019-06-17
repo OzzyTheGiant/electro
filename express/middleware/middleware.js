@@ -1,14 +1,13 @@
-const { csrfConfig } = require("../config/session-config");
-require('dotenv').config();
+const { sessionConfig, csrfConfig } = require("../config/app-config");
 
 function deleteSessionCookie(request, response, next) {
-	if (request.cookies[process.env.SESSION_COOKIE] && !request.session.user) {
-		response.clearCookie(process.env.SESSION_COOKIE);        
+	if (request.cookies[sessionConfig.name] && !request.session.user) {
+		response.clearCookie(sessionConfig.name);        
     } next();
 };
 
 function addCSRFToken(request, response, next) {
-	response.cookie(process.env.XSRF_COOKIE, request.csrfToken(), csrfConfig.cookie);
+	response.cookie(csrfConfig.name, request.csrfToken(), csrfConfig.cookie);
 	if (next) next();
 }
 
