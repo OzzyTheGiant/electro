@@ -9,7 +9,7 @@ class BillController {
 
 	/** Get all bills from database	*/
 	getAll(request, response, next) {
-		this.db.select().from(BillController.tableName).orderBy('PaymentDate', 'DESC').then(results => {
+		return this.db.select().from(BillController.tableName).orderBy('PaymentDate', 'DESC').then(results => {
 			response.json(results);
 		}).catch(BillController.errorHandler(next));
 	}
@@ -17,7 +17,7 @@ class BillController {
 	/** Insert new bills into database */
 	add(request, response, next) {
 		const bill = Bill.withValidatedData(request.body);
-		this.db.insert(bill).into(BillController.tableName).then(result => {
+		return this.db.insert(bill).into(BillController.tableName).then(result => {
 			if (!result) return next(new NotFoundError("bill"));
 			bill.ID = result[0];
 			response.status(201).json(bill);
@@ -27,7 +27,7 @@ class BillController {
 	/** Update bills in database */
 	update(request, response, next) {
 		const bill = Bill.withValidatedData(request.body);
-		this.db(BillController.tableName).where('ID', '=', request.params.id).update(bill).then(result => {
+		return this.db(BillController.tableName).where('ID', '=', request.params.id).update(bill).then(result => {
 			if (!result) return next(new NotFoundError("bill"));
 			response.json(bill);
 		}).catch(BillController.errorHandler(next));
@@ -35,7 +35,7 @@ class BillController {
 
 	/** Remove bill from database */
 	delete(request, response, next) {
-		this.db(this.tableName).where('ID', '=', request.params.id).del().then(result => {
+		return this.db(BillController.tableName).where('ID', '=', request.params.id).del().then(result => {
 			if (!result) return next(new NotFoundError("bill"));
 			response.status(204).end();
 		}).catch(BillController.errorHandler(next));

@@ -12,7 +12,7 @@ const router = express.Router();
 
 // instantiate controllers with dependencies
 const billController = new BillController(db);
-const loginController = new LoginController(db);
+const loginController = new LoginController(db, addCSRFToken);
 
 router.get("/", csrfProtection, addCSRFToken, (request, response, next) => {
 	response.status(204).end();
