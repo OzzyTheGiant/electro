@@ -17,7 +17,6 @@ user_schema = UserSchema();
 
 class UserResource(Resource):
 	def post(self):
-		# TODO: check that the month hasn't been used; do this for all frameworks
 		if request.path == '/api/login':
 			return UserResource.login(self);
 		elif request.path == '/api/logout':
