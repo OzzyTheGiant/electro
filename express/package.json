@@ -7,7 +7,7 @@
 		"express-session":"^1.16.2",
 		"memorystore":"^1.6.1",
 		"dotenv":"^8.0.0",
-		"bcrypt":"^3.0.6",
+		"bcrypt":"^5.0.0",
 		"knex":"^0.17.6",
 		"bristol":"^0.4.0",
 		"palin":"^2.3.0"
