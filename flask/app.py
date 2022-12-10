@@ -5,11 +5,11 @@ from flask_kvsession import KVSessionExtension;
 from simplekv.idgen import HashDecorator;
 from simplekv.fs import WebFilesystemStore;
 from dotenv import load_dotenv;
-from flask_app import ElectroAPI, config;
-from flask_app.config import configure_logging;
-from flask_app.resources import *;
-from flask_app.middleware import *;
-from flask_app.middleware.csrf import CSRFProtectionExtension;
+from python_flask import ElectroAPI, config;
+from python_flask.config import configure_logging;
+from python_flask.resources import *;
+from python_flask.middleware import *;
+from python_flask.middleware.csrf import CSRFProtectionExtension;
 
 load_dotenv(); # get environment variables
 configure_logging(); # configure loggers before starting app

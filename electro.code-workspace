@@ -1,0 +1,29 @@
+{
+	"folders": [
+        {
+            "name": "django",
+            "path": "django"
+        },
+        {
+            "name": "express",
+            "path": "express"
+        },
+        {
+            "name": "flask",
+            "path": "flask"
+        },
+        {
+            "name": "laravel",
+            "path": "laravel"
+        },
+        {
+            "name": "slim",
+            "path": "slim"
+        },
+        {
+            "name": "vue",
+            "path": "vue"
+        }
+    ],
+    "settings": {}
+}

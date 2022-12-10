@@ -1,5 +1,5 @@
 """Custom authentication backend"""
-from django_app.application.models import User;
+from python_django.application.models import User;
 from bcrypt import checkpw;
 
 class APIBackend:

@@ -4,7 +4,7 @@ from flask_restful import Resource;
 from werkzeug.exceptions import BadRequest;
 from peewee import ProgrammingError;
 from marshmallow import Schema, fields, post_load, validate, ValidationError as InvalidDataError;
-from flask_app.errors import ValidationError, NotFoundError, EmptyRequestBodyError, DatabaseError;
+from python_flask.errors import ValidationError, NotFoundError, EmptyRequestBodyError, DatabaseError;
 from ..models import Bill;
 
 # TODO: check for unknown data fields in all other frameworks

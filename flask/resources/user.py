@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest;
 from peewee import ProgrammingError, DoesNotExist;
 from bcrypt import checkpw;
 from marshmallow import Schema, fields, validate, ValidationError as InvalidDataError;
-from flask_app.errors import *;
+from python_flask.errors import *;
 from ..models import User;
 
 class UserSchema(Schema):
