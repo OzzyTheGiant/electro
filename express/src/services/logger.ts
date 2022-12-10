@@ -1,12 +1,12 @@
 import path from "path"
-import winston from "winston"
+import winston, { Logger } from "winston"
 
-export default function createWinstonLogger(appEnv: string, logFilePath: string) {
+export default function createWinstonLogger(appEnv: string, logFilePath: string): Logger {
     const logger = winston.createLogger({
         level: "info",
         format: winston.format.json(),
         transports: [
-            new winston.transports.File({ filename: 'error.log', level: 'error' }),
+            new winston.transports.File({ filename: logFilePath, level: 'error' }),
         ],
     });
 
@@ -14,7 +14,10 @@ export default function createWinstonLogger(appEnv: string, logFilePath: string)
     // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
     if (appEnv !== "production") {
         logger.add(new winston.transports.Console({
-            format: winston.format.combine()
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.simple()
+            )
         }))
     }
 
