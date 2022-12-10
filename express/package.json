@@ -1,20 +1,38 @@
 {
+    "name": "electro-api",
+    "author": "Oziel Perez <ozzy@dreamcraftdesigns.com>",
+    "packageManager": "pnpm@7.9.1",
+    "private": true,
 	"scripts":{
-		"test": "../node_modules/mocha/bin/mocha"
+        "build": "tsc",
+        "start": "node app.js",
+		"test": "node_modules/.bin/mocha"
 	},
+    "main": "app.js",
 	"dependencies":{
 		"express":"^4.17.1",
-		"express-session":"^1.16.2",
-		"memorystore":"^1.6.1",
-		"dotenv":"^8.0.0",
-		"bcrypt":"^3.0.6",
-		"knex":"^0.17.6",
-		"bristol":"^0.4.0",
-		"palin":"^2.3.0"
+		"jsonwebtoken": "^8.5.1",
+		"dotenv":"^16.0.0",
+		"bcrypt":"^5.1.0",
+		"knex":"^2.3.0",
+		"winston": "^3.8.2",
+        "typescript": "^4.9.0",
+        "helmet": "6.0.1",
+        "pg": "^8.8.0"
 	},
 	"devDependencies": {
-		"mocha":"^6.1.4",
-		"sinon":"^7.3.2",
-		"chai":"^4.2.0"
+        "@types/bcrypt": "^5.0.0",
+        "@types/mocha": "10.0.1",
+        "@types/express": "^4.17.14",
+        "@types/jsonwebtoken": "^8.5.9",
+        "@types/node": "^18.11.12",
+        "@types/pg": "^8.6.5",
+        "@typescript-eslint/parser": "^5.46.0",
+        "eslint": "^8.29.0",
+		"mocha":"^10.1.0",
+		"sinon":"^15.0.0",
+		"chai":"^4.2.0",
+        "ts-node": "^10.9.1",
+        "ts-node-dev": "^2.0.0"
 	}
 }
