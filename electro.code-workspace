@@ -25,5 +25,9 @@
             "path": "vue"
         }
     ],
-    "settings": {}
+    "settings": {
+        "cSpell.words": [
+            "loggable"
+        ]
+    }
 }
