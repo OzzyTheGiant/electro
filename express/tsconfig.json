@@ -3,24 +3,18 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
+        "sourceRoot": "./src",
         "noImplicitAny": true,
-        "moduleResolution": "Node16",
+        "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
         "paths": {
-            "@app/*": ["./*"],
-            "*": ["node_modules/*"]
+            "@app/*": ["src/*"]
         }
     },
     "include": [
-        "config/**/*",
-        "controllers/**/*",
-        "database/**/*",
-        "exceptions/**/*",
-        "middleware/**/*",
-        "models/**/*",
-        "src/services/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "node_modules"
