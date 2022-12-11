@@ -1,7 +1,8 @@
-import { ErrorRequestHandler, Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
 import Bill from "@app/models/Bill"
 import { DatabaseError, NotFoundError } from "@app/exceptions"
 import { Knex } from "knex"
+import { User } from "@app/models/User"
 
 export default class BillController {
     static tableName = "bills"
@@ -13,10 +14,15 @@ export default class BillController {
     }
 
     /** Get all bills from database	*/
-    public async getAll(_: Request, response: Response, next: NextFunction): Promise<void> {
+    public async getAll(
+        request: Request & { user: User }, 
+        response: Response, 
+        next: NextFunction
+    ): Promise<void> {
         try {
             const results = await this.db.select()
                 .from(BillController.tableName)
+                .where({ user_id: request.user.id })
                 .orderBy('payment_date', 'DESC')
 
             response.json(results)
@@ -41,11 +47,18 @@ export default class BillController {
     }
 
     /** Update bills in database */
-    public async update(request: Request, response: Response, next: NextFunction): Promise<void> {
+    public async update(
+        request: Request & { user: User }, 
+        response: Response, 
+        next: NextFunction
+    ): Promise<void> {
         const bill = Bill.withValidatedData(request.body)
 
         try {
-            const result = await this.db(BillController.tableName).where('id', '=', request.params.id).update(bill)
+            const result = await this.db(BillController.tableName)
+                .where('id', '=', request.params.id)
+                .andWhere("user_id", "=", request.user.id)
+                .update(bill)
             if (!result) return next(new NotFoundError("bill"))
             response.json(bill)
         } catch (error: any) {
@@ -54,10 +67,16 @@ export default class BillController {
     }
 
     /** Remove bill from database */
-    public async delete(request: Request, response: Response, next: NextFunction): Promise<void> {
+    public async delete(
+        request: Request & { user: User }, 
+        response: Response, 
+        next: NextFunction
+    ): Promise<void> {
         try {
             const result = await this.db(BillController.tableName)
-                .where('id', '=', request.params.id).del()
+                .where('id', '=', request.params.id)
+                .andWhere("user_id", request.user.id)
+                .del()
 
             if (!result) return next(new NotFoundError("bill"))
             response.status(204).end()

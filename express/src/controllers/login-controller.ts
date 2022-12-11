@@ -40,7 +40,7 @@ export default class LoginController {
         if (!confirmed || !user) next(new AuthenticationError())
 
         delete user.password
-        const token = jwt.sign({ data: user }, this.appKey, { 
+        const token = jwt.sign(user, this.appKey, { 
             expiresIn: `${this.sessionLifetime}min`
         })
 

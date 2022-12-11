@@ -6,10 +6,10 @@ dotenv.config()
 
 export const appKey = process.env.APP_KEY
 export const sessionName = process.env.SESSION_NAME
-export const sessionLifetime = process.env.SESSION_LIFETIME
+export const sessionLifetime = parseInt(process.env.SESSION_LIFETIME)
 
 export const cookieDefaultSettings = {
-	maxAge: parseInt(sessionLifetime) * 60 * 1000,
+	maxAge: sessionLifetime * 60 * 1000,
 	secure: process.env.APP_ENV === "production",
 	httpOnly: true
 }

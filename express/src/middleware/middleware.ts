@@ -12,20 +12,21 @@ export async function checkIsAuthenticated(
 ): Promise<void> {
     const token = request.cookies[sessionName]
     let user: User
-    let data: any
+    let jwtObject: any
 
     try {
-        data = jwt.verify(token, appKey) as any
+        jwtObject = jwt.verify(token, appKey) as any
     } catch (error: any) {
         next(new AuthorizationError())
     }
 
     try {
-        user = (await db.select().from(LoginController.tableName).where({ id: data.id }))[0]
+        user = (await db.select().from(LoginController.tableName).where({ id: jwtObject.id }))[0]
     } catch (error: any) {
         next(new DatabaseError(error.message))
     }
     
+    (request as any).user = user
     if (!user) next(new AuthorizationError())
     return next()
 }
