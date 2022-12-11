@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import createLogger from "@app/services/logger"
-// const createQueryBuilder = require("../database/mysql");
+import createQueryBuilder from "@app/database/postgresql"
 
 dotenv.config()
 
@@ -11,20 +11,19 @@ dotenv.config()
 // };
 
 export const logger = createLogger(
-    process.env.APP_ENV, 
+    process.env.APP_ENV,
     process.env.LOG_FILE_PATH
 )
-// db: createQueryBuilder(
-// 	process.env.DB_CONNECTION, 
-// 	process.env.DB_HOST, 
-// 	process.env.DB_PORT, 
-// 	process.env.DB_DATABASE, 
-// 	process.env.DB_USER, 
-// 	process.env.DB_PASSWORD,
-// 	this.logger
-// ),
-// csrfConfig: {
-// 	name: process.env.XSRF_COOKIE,
-// 	cookie:{ ...cookieDefaultSettings }
-// }
+
+export const db = createQueryBuilder(
+    process.env.DB_CONNECTION,
+    {
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT),
+        database: process.env.DB_DATABASE,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+    },
+    logger
+)
 
