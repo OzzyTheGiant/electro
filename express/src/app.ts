@@ -1,5 +1,5 @@
 import createExpressApp, { Request, Response, NextFunction } from "express"
-// const cookieParser = require("cookie-parser");
+import cookieParser from "cookie-parser"
 import bodyParser from "body-parser"
 import router from "@app/routes"
 import { logger } from "@app/config"
@@ -20,8 +20,8 @@ process.on("uncaughtException", error => {
 })
 
 /* Middlewares and Router */
-// app.use(cookieParser())
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use("/api", router)
 
 /* Error 404 - Not Found handler */
@@ -30,8 +30,8 @@ app.use((_: Request, __: Response, next: NextFunction) => {
 })
 
 /* Global error handler */
-app.use((error: any, request: Request, response: Response, next: NextFunction) => {
-    if (error.loggable) logger.error(error, error.metadata)
+app.use((error: any, _: Request, response: Response, __: NextFunction) => {
+    if (error.loggable) logger.error(error.message, error.metadata)
     response.status(error.code || 500).json({ message: error.message })
 })
 

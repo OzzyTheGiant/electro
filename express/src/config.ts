@@ -4,11 +4,15 @@ import createQueryBuilder from "@app/database/postgresql"
 
 dotenv.config()
 
-// const cookieDefaultSettings = {
-// 	maxAge: process.env.SESSION_LIFETIME * 60 * 1000,
-// 	secure: process.env.APP_ENV === "production",
-// 	httpOnly: true
-// };
+export const appKey = process.env.APP_KEY
+export const sessionName = process.env.SESSION_NAME
+export const sessionLifetime = process.env.SESSION_LIFETIME
+
+export const cookieDefaultSettings = {
+	maxAge: parseInt(sessionLifetime) * 60 * 1000,
+	secure: process.env.APP_ENV === "production",
+	httpOnly: true
+}
 
 export const logger = createLogger(
     process.env.APP_ENV,

@@ -37,11 +37,12 @@ export class NotFoundError extends Error {
 }
 
 export class DatabaseError extends Error {
-    public metadata: { [key: string]: any }
+    public metadata: { [key: string]: any } | string
+    public message!: string
     public readonly code = 500
     public readonly loggable = true
 
-    constructor(error: { [key: string]: any }) {
+    constructor(error: { [key: string]: any } | string) {
         super("Error occurred while querying the database");
         this.metadata = { error }
         this.code = 500

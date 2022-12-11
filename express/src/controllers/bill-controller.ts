@@ -12,11 +12,6 @@ export default class BillController {
         this.db = db
     }
 
-    /** Creates an error handling function for Knex, which will call error handling middleware */
-    static errorHandler(error: any, next: NextFunction): void {
-        return next(new DatabaseError(error.message))
-    }
-
     /** Get all bills from database	*/
     public async getAll(_: Request, response: Response, next: NextFunction): Promise<void> {
         try {
@@ -26,7 +21,7 @@ export default class BillController {
 
             response.json(results)
         } catch (error: any) {
-            BillController.errorHandler(error, next)
+            next(new DatabaseError(error.message))
         }
     }
 
@@ -41,7 +36,7 @@ export default class BillController {
                 response.status(201).json(bill)
             })
         } catch (error: any) {
-            BillController.errorHandler(error, next)
+            next(new DatabaseError(error.message))
         }
     }
 
@@ -54,7 +49,7 @@ export default class BillController {
             if (!result) return next(new NotFoundError("bill"))
             response.json(bill)
         } catch (error: any) {
-            BillController.errorHandler(error, next)
+            next(new DatabaseError(error.message))
         }
     }
 
@@ -67,7 +62,7 @@ export default class BillController {
             if (!result) return next(new NotFoundError("bill"))
             response.status(204).end()
         } catch (error: any) {
-            BillController.errorHandler(error, next)
+            next(new DatabaseError(error.message))
         }
     }
 }
