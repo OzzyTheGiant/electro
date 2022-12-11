@@ -14,6 +14,14 @@ export const cookieDefaultSettings = {
 	httpOnly: true
 }
 
+export const csrfConfig = {
+    name: process.env.CSRF_COOKIE_NAME,
+    cookie: {
+        secure: process.env.APP_ENV === "production",
+        httpOnly: true
+    }
+}
+
 export const logger = createLogger(
     process.env.APP_ENV,
     process.env.LOG_FILE_PATH

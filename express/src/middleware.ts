@@ -30,14 +30,3 @@ export async function checkIsAuthenticated(
     if (!user) next(new AuthorizationError())
     return next()
 }
-
-// export function deleteSessionCookie(request: Request, response: Response, next: NextFunction): void {
-//     if (request.cookies[sessionConfig.name] && !request.session.user) {
-//         response.clearCookie(sessionConfig.name)
-//     } next()
-// };
-
-// export function addCSRFToken(request: Request, response: Response, next: NextFunction): void {
-//     response.cookie(csrfConfig.name, request.csrfToken(), csrfConfig.cookie)
-//     if (next) next()
-// }
