@@ -1,6 +1,9 @@
 import winston, { Logger } from "winston"
+import { MESSAGE } from "triple-beam"
 
 export default function createWinstonLogger(appEnv: string, logFilePath: string): Logger {
+    type TransformableInfo = winston.Logform.TransformableInfo
+
     const logger = winston.createLogger({
         level: "info",
         format: winston.format.json(),
@@ -15,7 +18,14 @@ export default function createWinstonLogger(appEnv: string, logFilePath: string)
         logger.add(new winston.transports.Console({
             format: winston.format.combine(
                 winston.format.colorize(),
-                winston.format.simple()
+                winston.format.timestamp(),
+                winston.format((info: TransformableInfo, _: any): TransformableInfo => {
+                    const { level, timestamp, message, ...rest } = info
+                    const meta = Object.keys(rest).length ? JSON.stringify(rest) : '';
+                    
+                    (info as any)[MESSAGE] = `[${timestamp}] ${level}: ${message} ${meta}`
+                    return info
+                })()
             )
         }))
     }
