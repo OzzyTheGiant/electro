@@ -1,4 +1,3 @@
-import path from "path"
 import winston, { Logger } from "winston"
 
 export default function createWinstonLogger(appEnv: string, logFilePath: string): Logger {
