@@ -28,6 +28,9 @@
     "settings": {
         "cSpell.words": [
             "loggable"
-        ]
+        ],
+        "python.linting.pylintEnabled": false,
+        "python.linting.lintOnSave": true,
+        "python.linting.flake8Enabled": true
     }
 }
