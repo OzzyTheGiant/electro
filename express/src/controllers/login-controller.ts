@@ -37,7 +37,7 @@ export default class LoginController {
         let confirmed = false
 
         if (user) confirmed = await argon2.verify(user.password, request.body.password)
-        if (!confirmed || !user) next(new AuthenticationError())
+        if (!confirmed || !user) return next(new AuthenticationError())
 
         delete user.password
         const token = jwt.sign(user, this.appKey, { 
@@ -48,8 +48,8 @@ export default class LoginController {
         response.json(user)
     }
 
-    public async logout(request: Request, response: Response): Promise<void> {
-        response.clearCookie(this.sessionName).end()
+    public async logout(_: Request, response: Response): Promise<void> {
+        response.status(204).clearCookie(this.sessionName).end()
     }
 }
 

@@ -32,15 +32,14 @@ export default class BillController {
     }
 
     /** Insert new bills into database */
-    public add(request: Request, response: Response, next: NextFunction): void {
+    public async add(request: Request, response: Response, next: NextFunction): Promise<void> {
         try {
             const bill = Bill.withValidatedData(request.body)
-
-            this.db.insert(bill).into(BillController.tableName).then(result => {
-                if (!result) return next(new NotFoundError("bill"))
-                bill.id = result[0]
-                response.status(201).json(bill)
-            })
+            const result = await this.db.insert(bill).into(BillController.tableName)
+            
+            if (!result) return next(new NotFoundError("bill"))
+            bill.id = result[0]
+            response.status(201).json(bill)
         } catch (error: any) {
             next(new DatabaseError(error.message))
         }
