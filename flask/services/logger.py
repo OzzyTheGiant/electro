@@ -1,26 +1,12 @@
-import os
-import sys
-import base64
-import logging
-from datetime import timedelta
+import os, sys, logging
 from logging.config import dictConfig
 
-environment = os.getenv("APP_ENV")
 
-config = {
-    "ENV": "development" if environment == "local" else environment,
-    "SECRET_KEY": base64.b64decode(os.getenv("APP_KEY").split(":")[1]),
-    "SESSION_COOKIE_NAME": os.getenv("SESSION_COOKIE"),
-    "SESSION_COOKIE_SECURE": environment != "local",
-    # multiply minutes times seconds
-    "PERMANENT_SESSION_LIFETIME": timedelta(seconds=int(os.getenv("SESSION_LIFETIME")) * 60),
-    "MAX_CONTENT_LENGTH": 1048576,  # 1 MB
-    "SESSION_REFRESH_EACH_REQUEST": True,
-    "WTF_CSRF_HEADERS": ['X-XSRF-TOKEN', 'X-CSRF-TOKEN']
-}
+def create_logger():
+    if not os.path.exists(os.environ["LOG_FILE"]):
+        file = open(os.environ["LOG_FILE"], "x")
+        file.close()
 
-
-def configure_logging():
     dictConfig({
         "version": 1,
         "formatters": {
@@ -37,16 +23,16 @@ def configure_logging():
             'console': {
                 "class": (
                     "logging.StreamHandler"
-                    if environment != 'local'
+                    if os.environ["APP_ENV"] != 'local'
                     else "colorlog.StreamHandler"
                 ),
                 "stream": sys.stdout,
-                "formatter": "standard" if environment != 'local' else 'colored',
+                "formatter": "standard" if os.environ["APP_ENV"] != 'local' else 'colored',
                 "level": logging.DEBUG
             },
             'file': {
                 "class": "logging.FileHandler",
-                "filename": os.getcwd() + "/logs/application.log",
+                "filename": os.environ["LOG_FILE"],
                 "formatter": 'standard',
                 "level": logging.WARNING
             },

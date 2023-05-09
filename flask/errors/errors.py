@@ -19,7 +19,7 @@ class ValidationError(Exception):
 
 class NotFoundError(Exception):
     """
-    Error for when a specific field of data was not found in database, 
+    Error for when a specific field of data was not found in database,
     which is different from HTTP Not Found error
     """
 
@@ -31,7 +31,7 @@ class NotFoundError(Exception):
 
 class AuthorizationError(HTTPException):
     """
-    Error for when user is not authorized to perform a specific rest api endpoint 
+    Error for when user is not authorized to perform a specific rest api endpoint
     or CSRF token not valid
     """
 
@@ -53,7 +53,7 @@ class AuthenticationError(HTTPException):
 
 class DatabaseError(Exception):
     """
-    Generic error for database query failures; 
+    Generic error for database query failures;
     metadata will provide hidden message which will be logged
     """
 

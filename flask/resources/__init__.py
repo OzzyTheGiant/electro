@@ -1,5 +1,3 @@
-from bill import BillResource
-from user import UserResource
+from flask_restx import Api
 
-BillResource = BillResource
-UserResource = UserResource
+api = Api(prefix = "/api")

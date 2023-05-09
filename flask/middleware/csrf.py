@@ -1,6 +1,6 @@
 from flask_wtf import CSRFProtect
 from flask_wtf.csrf import CSRFError
-from ..errors import AuthorizationError
+from errors import AuthorizationError
 
 
 class CSRFProtectionExtension(CSRFProtect):
