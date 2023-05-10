@@ -1,11 +1,17 @@
+from dataclasses import dataclass
 from peewee import IntegerField, CharField
-from ._base import BaseModel
+from models import BaseModel
 
 
+@dataclass
 class User(BaseModel):
-    ID = IntegerField(primary_key=True)
-    Username = CharField(max_length=30)
-    Password = CharField(max_length=255)
+    id: int = IntegerField(primary_key=True)
+    username: str = CharField(max_length=30)
+    password = CharField(max_length=255)
 
     class Meta():
-        db_table = "Users"
+        db_table = "users"
+
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)

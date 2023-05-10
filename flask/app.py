@@ -1,6 +1,6 @@
 # from flask_wtf import CSRFProtect
+import os
 from dotenv import load_dotenv
-from flask import Response
 from config.bootstrap import create_app
 # from middleware import CSRFMiddleware, SessionMiddleware
 # from middleware.csrf import CSRFProtectionExtension
@@ -27,10 +27,5 @@ app = create_app()
 #     return response
 
 
-@app.route("/api")
-def home():
-    return Response("Hello world")
-
-
 if __name__ == "__main__":
-    app.run()
+    app.run(port = os.environ["APP_PORT"])

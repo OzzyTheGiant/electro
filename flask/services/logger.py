@@ -3,8 +3,8 @@ from logging.config import dictConfig
 
 
 def create_logger():
-    if not os.path.exists(os.environ["LOG_FILE"]):
-        file = open(os.environ["LOG_FILE"], "x")
+    if not os.path.exists(os.environ["LOG_FILE_PATH"]):
+        file = open(os.environ["LOG_FILE_PATH"], "x")
         file.close()
 
     dictConfig({
@@ -32,7 +32,7 @@ def create_logger():
             },
             'file': {
                 "class": "logging.FileHandler",
-                "filename": os.environ["LOG_FILE"],
+                "filename": os.environ["LOG_FILE_PATH"],
                 "formatter": 'standard',
                 "level": logging.WARNING
             },
