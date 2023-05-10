@@ -1,5 +1,5 @@
 # from flask import request
-from typing import Union
+from typing import List, Tuple, Union
 from flask import Blueprint, request
 from flask_restx import Resource, Api
 from werkzeug.exceptions import BadRequest, NotFound
@@ -15,7 +15,7 @@ ns = api.namespace("bills", description = "Bills API routes")
 
 @ns.route("/", "/<int:id>")
 class BillResource(Resource):
-    def get(self):
+    def get(self) -> List[Bill]:
         try:
             bills = Bill.select()
             return [bill.as_dict() for bill in bills]
@@ -27,7 +27,7 @@ class BillResource(Resource):
             })
 
 
-    def post(self):
+    def post(self) -> Tuple[dict, int]:
         try:
             bill_schema = BillSchema()
             request_data = request.get_json()
@@ -43,7 +43,7 @@ class BillResource(Resource):
         return (request_data, 201)
 
 
-    def put(self, id: Union[int, None] = None):
+    def put(self, id: Union[int, None] = None) -> dict:
         try:
             bill_schema = BillSchema()
             request_data = request.get_json()
@@ -62,7 +62,7 @@ class BillResource(Resource):
         return request_data
 
 
-    def delete(self, id):
+    def delete(self, id) -> Tuple[None, int]:
         try:
             rows = Bill.delete_by_id(id)
         except ProgrammingError as error:

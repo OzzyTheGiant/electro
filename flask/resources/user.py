@@ -1,56 +1,56 @@
-from flask import request, session
-from flask_restful import Resource
-from werkzeug.exceptions import BadRequest
+from flask import Blueprint, Response, request, session
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
+from flask_restx import Api, Resource
+from werkzeug.exceptions import BadRequest, Unauthorized
 from peewee import ProgrammingError, DoesNotExist
-from bcrypt import checkpw
-from marshmallow import Schema, fields, ValidationError as InvalidDataError
-from errors import AuthenticationError, EmptyRequestBodyError, DatabaseError, ValidationError
-from models import User
+from argon2 import PasswordHasher
+from marshmallow import ValidationError as InvalidDataError
+from errors import DatabaseError
+from models.user import User, UserSchema
+
+blueprint = Blueprint("auth", __name__)
+api = Api(blueprint, title = "Auth API", description = "App Authentication")
 
 
-class UserSchema(Schema):
-    ID = fields.Int()
-    Username = fields.String(required=True)
-    Password = fields.String(required=True, load_only=True)
-
-
-user_schema = UserSchema()
-
-
+@api.route("/login", "/logout")
 class UserResource(Resource):
-    def post(self):
+    def post(self) -> Response:
         if request.path == '/api/login':
-            return UserResource.login(self)
+            return self.login()
         elif request.path == '/api/logout':
-            return UserResource.logout(self)
+            return self.logout()
 
-    def login(self):
+
+    def login(self) -> Response:
         try:
-            request_data = request.get_json()
-            validated_data = user_schema.load({
-                "Username": request_data["username"],
-                "Password": request_data["password"]
-            })
-            user = User.select().where(User.Username == validated_data["Username"]).get()
+            user_schema = UserSchema()
+            validated_data = user_schema.load(request.get_json())
+            user = User.select().where(User.username == validated_data["username"]).get()
         except InvalidDataError as error:
-            raise ValidationError(metadata=error.messages)
-        except BadRequest:
-            raise EmptyRequestBodyError()
+            raise BadRequest(error.message)
         except DoesNotExist:
-            raise AuthenticationError()
+            raise Unauthorized("Username or password is incorrect")
         except ProgrammingError as error:
             raise DatabaseError(metadata={
                 'sql_error_code': error.args[0],
                 'sql_error_message': error.args[1]
             })
-        if not checkpw(validated_data["Password"].encode("utf-8"), user.Password.encode("utf-8")):
-            raise AuthenticationError()
+
+        ph = PasswordHasher()
+
+        if not ph.verify(user.password, validated_data["password"]):
+            raise Unauthorized("Username or password is not correct")
         else:
             current_user = user_schema.dump(user)
-            session.regenerate()
+            token = create_access_token(current_user)
+            response = Response(user.as_json())
+            set_access_cookies(response, token)
             session["current_user"] = current_user
-        return current_user
 
-    def logout(self):
-        session.regenerate()
-        return ("", 204)
+        return response
+
+
+    def logout(self) -> Response:
+        response = Response(status = 204)
+        unset_jwt_cookies(response)
+        return response

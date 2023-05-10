@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from marshmallow import Schema, fields
 from peewee import IntegerField, CharField
 from models import BaseModel
 
@@ -15,3 +16,9 @@ class User(BaseModel):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+
+class UserSchema(Schema):
+    id = fields.Int()
+    username = fields.String(required=True)
+    password = fields.String(required=True, load_only=True)
