@@ -1,12 +1,13 @@
 import os
 from typing import Union
 from datetime import timedelta
-from flask import Flask, current_app, jsonify
+from flask import Flask
 from models import database
 from resources.user import blueprint as auth_bp
 from resources.bill import blueprint as bills_bp
 from services.logger import create_logger
 from services.auth import jwt
+from errors import error_handler
 
 
 class AppConfig(object):
@@ -33,39 +34,23 @@ class AppConfig(object):
         self.DB_PASSWORD = os.environ["DB_PASSWORD"]
 
 
-def error_handler(error: Exception):
-    """Global error handler for all API routes"""
-    print("was here")
-    if hasattr(error, "loggable") and error.loggable:
-        if hasattr(error, 'description'):  # check if it's a custom error with description text
-            if hasattr(error, 'metadata'):  # check if custom error class allows metadata
-                current_app.logger.error(error.description, error.metadata)
-            else:
-                current_app.logger.error(error.description)
-        else:  # possible uncaught or unexpected exceptions
-            current_app.logger.error(error.args[0])  # message
-
-    return (jsonify({ "message": error.description or error.args[0] }), error.code)
-
-
 def create_app(config: Union[AppConfig, None] = None) -> Flask:
     app = Flask(__name__)
 
     app.config.from_object(config if config else AppConfig())
     create_logger()
 
-    jwt.init_app(app)
+    # Register blueprints to app
+    app.register_blueprint(bills_bp, url_prefix ="/api")
+    app.register_blueprint(auth_bp, url_prefix = "/api")
+    app.register_error_handler(Exception, error_handler)
 
+    jwt.init_app(app)
     database.init(
         app.config["DB_DATABASE"],
         host = app.config["DB_HOST"],
         user = app.config["DB_USER"],
         password = app.config["DB_PASSWORD"]
     )
-
-    # Register blueprints to app
-    app.register_blueprint(bills_bp, url_prefix ="/api")
-    app.register_blueprint(auth_bp, url_prefix = "/api")
-    app.register_error_handler(Exception, error_handler)
 
     return app

@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, request, session
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
+from flask_jwt_extended import create_access_token, jwt_required, set_access_cookies
+from flask_jwt_extended import unset_jwt_cookies
 from flask_restx import Api, Resource
 from werkzeug.exceptions import BadRequest, Unauthorized
 from peewee import ProgrammingError, DoesNotExist
@@ -50,6 +51,7 @@ class UserResource(Resource):
         return response
 
 
+    @jwt_required()
     def logout(self) -> Response:
         response = Response(status = 204)
         unset_jwt_cookies(response)

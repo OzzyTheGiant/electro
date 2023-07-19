@@ -1,11 +1,13 @@
 # from flask import request
 from typing import List, Tuple, Union
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required
 from flask_restx import Resource, Api
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import HTTPException, BadRequest, NotFound
 from peewee import ProgrammingError
 from marshmallow import ValidationError as InvalidDataError
 from models.bill import Bill, BillSchema
+from errors import error_handler
 from errors.exceptions import DatabaseError
 
 blueprint = Blueprint("bills", __name__, url_prefix = "/bills")
@@ -13,8 +15,15 @@ api = Api(blueprint, title = "Bills API Endpoints", description = "Electric Bill
 ns = api.namespace("bills", description = "Bills API routes")
 
 
-@ns.route("/", "/<int:id>")
+@api.errorhandler(Exception)
+def api_error_handler(error: Exception):
+    if isinstance(error, HTTPException): return error_handler(error)
+    raise error
+
+
+@ns.route("", "/<int:id>")
 class BillResource(Resource):
+    @jwt_required()
     def get(self) -> List[Bill]:
         try:
             bills = Bill.select()
@@ -27,6 +36,7 @@ class BillResource(Resource):
             })
 
 
+    @jwt_required()
     def post(self) -> Tuple[dict, int]:
         try:
             bill_schema = BillSchema()
@@ -43,6 +53,7 @@ class BillResource(Resource):
         return (request_data, 201)
 
 
+    @jwt_required()
     def put(self, id: Union[int, None] = None) -> dict:
         try:
             bill_schema = BillSchema()
@@ -62,6 +73,7 @@ class BillResource(Resource):
         return request_data
 
 
+    @jwt_required()
     def delete(self, id) -> Tuple[None, int]:
         try:
             rows = Bill.delete_by_id(id)

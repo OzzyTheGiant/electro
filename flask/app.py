@@ -1,6 +1,8 @@
 # from flask_wtf import CSRFProtect
 import os
 from dotenv import load_dotenv
+# from flask import request
+# from flask_jwt_extended import verify_jwt_in_request
 from config.bootstrap import create_app
 # from middleware import CSRFMiddleware, SessionMiddleware
 # from middleware.csrf import CSRFProtectionExtension
@@ -17,8 +19,8 @@ app = create_app()
 
 
 # @app.before_request
-# def middleware_pre_request_handler():
-#     SessionMiddleware()()
+# def verify_jwt_exists():
+#     if request.path != "/api/login": verify_jwt_in_request()
 
 
 # @app.after_request
