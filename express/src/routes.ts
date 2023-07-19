@@ -1,5 +1,5 @@
 import { Router, NextFunction, Request, Response } from "express"
-import csurf, { CookieOptions} from "csurf"
+import csurf from "csurf"
 import BillController from "@app/controllers/bill-controller"
 import LoginController from "@app/controllers/login-controller"
 import { db, appKey, sessionName, cookieDefaultSettings } from "@app/config"
