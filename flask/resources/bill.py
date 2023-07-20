@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Resource, Api
 from werkzeug.exceptions import HTTPException, BadRequest, NotFound
 from peewee import ProgrammingError
-from marshmallow import ValidationError as InvalidDataError
+from marshmallow import ValidationError
 from models.bill import Bill, BillSchema
 from errors import error_handler
 from errors.exceptions import DatabaseError
@@ -43,7 +43,8 @@ class BillResource(Resource):
             request_data = request.get_json()
             validated_data = bill_schema.load(request_data)
             request_data["id"] = Bill.insert(**validated_data).execute()
-        except InvalidDataError as error: raise BadRequest(error.message)
+        except ValidationError as error:
+            raise BadRequest(error.normalized_messages())
         except ProgrammingError as error:
             raise DatabaseError(metadata = {
                 'sql_error_code': error.args[0],
@@ -60,8 +61,8 @@ class BillResource(Resource):
             request_data = request.get_json()
             validated_data = bill_schema.load(request_data)
             rows = Bill.update(**validated_data).where(Bill.id == request_data["id"]).execute()
-        except InvalidDataError as error:
-            raise BadRequest(error.message)
+        except ValidationError as error:
+            raise BadRequest(error.normalized_messages())
         except ProgrammingError as error:
             raise DatabaseError(metadata = {
                 'sql_error_code': error.args[0],
