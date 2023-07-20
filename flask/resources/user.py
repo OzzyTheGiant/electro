@@ -1,10 +1,11 @@
-from flask import Blueprint, Response, request, session
+from flask import Blueprint, Response, request
 from flask_jwt_extended import create_access_token, jwt_required, set_access_cookies
 from flask_jwt_extended import unset_jwt_cookies
 from flask_restx import Api, Resource
 from werkzeug.exceptions import BadRequest, Unauthorized
 from peewee import ProgrammingError, DoesNotExist
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 from marshmallow import ValidationError as InvalidDataError
 from errors import DatabaseError
 from models.user import User, UserSchema
@@ -28,7 +29,7 @@ class UserResource(Resource):
             validated_data = user_schema.load(request.get_json())
             user = User.select().where(User.username == validated_data["username"]).get()
         except InvalidDataError as error:
-            raise BadRequest(error.message)
+            raise BadRequest(error.normalized_messages())
         except DoesNotExist:
             raise Unauthorized("Username or password is incorrect")
         except ProgrammingError as error:
@@ -39,14 +40,15 @@ class UserResource(Resource):
 
         ph = PasswordHasher()
 
-        if not ph.verify(user.password, validated_data["password"]):
+        try:
+            ph.verify(user.password, validated_data["password"])
+        except VerifyMismatchError:
             raise Unauthorized("Username or password is not correct")
-        else:
-            current_user = user_schema.dump(user)
-            token = create_access_token(current_user)
-            response = Response(user.as_json())
-            set_access_cookies(response, token)
-            session["current_user"] = current_user
+
+        current_user = user_schema.dump(user)
+        token = create_access_token(current_user)
+        response = Response(user.as_json())
+        set_access_cookies(response, token)
 
         return response
 
