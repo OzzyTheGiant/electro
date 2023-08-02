@@ -1,20 +1,22 @@
 <?php
-namespace Electro\exceptions;
+namespace Electro\Exceptions;
 
-use \Exception;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpInternalServerErrorException;
 
-class DatabaseException extends Exception implements Loggable {
-	protected $code = 500;
+class DatabaseException extends HttpInternalServerErrorException implements Loggable {
 	protected $metadata = null;
 
-	public function __construct($message) {
-		$this->message = "Something went wrong while querying the database";
-		$this->metadata = [
-			"hidden_message" => $message
-		];
+	public function __construct(Request $request, string $message) {
+        parent::__construct($request, $message);
+		$this->metadata = ["hidden_message" => $message];
 	}
 
-	public function getMetadata():array {
+	public function getMetadata(): array {
 		return $this->metadata;
 	}
+
+    public function getStatusCode(): int {
+        return $this->code;
+    }
 }

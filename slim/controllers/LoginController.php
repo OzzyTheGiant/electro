@@ -1,5 +1,5 @@
 <?php
-namespace Electro\controllers;
+namespace Electro\Controllers;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
