@@ -30,21 +30,22 @@ class DependencyManager {
 
         $error_callback = function (Request $request, Throwable $error) use ($app, $container) {
             $response = $app->getResponseFactory()->createResponse();
+            $message = "Server Error: Try again or contact for assistance";
+            $is_http_error = $error instanceof HttpSpecializedException;
+            $code = $error instanceof Loggable ? $error->getStatusCode() : $error->getCode();
+            $code = $code ?: 500;
 
-            $container->get("logger")->error(
-                $error->getMessage(), 
-                $error instanceof Loggable ? $error->getMetadata() : []
-            );
+            if (!$is_http_error || $code >= 500) {
+                $container->get("logger")->error(
+                    $error->getMessage(), 
+                    $error instanceof Loggable ? $error->getMetadata() : []
+                );
+            } else if ($is_http_error) {
+                $message = $error->getMessage();
+            }
 
-            $response->getBody()->write(json_encode([
-                "message" => $error instanceof HttpSpecializedException && $error->getCode() != 500 ? 
-                    $error->getMessage() : 
-                    "Server Error: Try again or contact for assistance"
-            ]));
-                
-            return $response
-                ->withStatus($error->getStatusCode() ?: 500)
-                ->withHeader("Content-Type", "application/json");
+            $response->getBody()->write(json_encode(["message" => $message]));
+            return $response->withStatus($code)->withHeader("Content-Type", "application/json");
         };
 
         $app->addErrorMiddleware(true, true, true, $container->get("logger"))

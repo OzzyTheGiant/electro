@@ -15,6 +15,7 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
 $app = AppFactory::create(new ResponseFactory(), DependencyManager::bootstrapDependencies());
+$app->addBodyParsingMiddleware();
 DependencyManager::setUpErrorHandler($app);
 
 // $app->add(new CSRFTokenMiddleware($container));
@@ -25,7 +26,7 @@ $app->group("/api", function(RouteCollectorProxy $group) {
 	// $this->post("/logout", LoginController::class . ":logout");
     $group->get("/bills", BillController::class . ":fetchAll");
     $group->post("/bills", BillController::class . ":add");
-    $group->put("/bills/{id}", BillController::class .":update");
+    $group->put("/bills[/{id}]", BillController::class .":update");
     $group->delete("/bills/{id}", BillController::class . ":delete");
 });
 
