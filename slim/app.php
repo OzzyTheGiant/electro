@@ -7,7 +7,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Dotenv\Dotenv;
 use Electro\Config\DependencyManager;
 use Electro\Controllers\BillController;
-// use Electro\controllers\LoginController;
+use Electro\Controllers\LoginController;
 // use Electro\middleware\CSRFTokenMiddleware;
 
 // load environment variables from .env
@@ -21,9 +21,9 @@ DependencyManager::setUpErrorHandler($app);
 // $app->add(new CSRFTokenMiddleware($container));
 
 $app->group("/api", function(RouteCollectorProxy $group) {
-	// $this->get("", LoginController::class . ":home");
-	// $this->post("/login", LoginController::class . ":login");
-	// $this->post("/logout", LoginController::class . ":logout");
+	$group->get("/", LoginController::class . ":home");
+    $group->post("/login", LoginController::class . ":login");
+	$group->post("/logout", LoginController::class . ":logout");
     $group->get("/bills", BillController::class . ":fetchAll");
     $group->post("/bills", BillController::class . ":add");
     $group->put("/bills[/{id}]", BillController::class .":update");

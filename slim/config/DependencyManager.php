@@ -3,7 +3,8 @@ namespace Electro\Config;
 
 use DI\Container;
 use Electro\Controllers\BillController;
-use Electro\exceptions\Loggable;
+use Electro\Controllers\LoginController;
+use Electro\Exceptions\Loggable;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container as DBContainer;
@@ -22,6 +23,7 @@ class DependencyManager {
         $container->set("logger", self::createLogger());
         $container->set("database", self::createDatabase($container));
         $container->set(BillController::class, self::createBillController($container));
+        $container->set(LoginController::class, self::createLoginController($container));
         return $container;
     }
 
@@ -69,6 +71,10 @@ class DependencyManager {
         return $logger;
     }
 
+    private static function createLoginController(ContainerInterface $container): LoginController {
+        return new LoginController($container->get("database")->table(LoginController::$table_name));
+    }
+    
     private static function createBillController(ContainerInterface $container): BillController {
         return new BillController($container->get("database")->table(BillController::$table_name));
     }

@@ -1,5 +1,5 @@
 <?php
-namespace Electro\exceptions;
+namespace Electro\Exceptions;
 
 interface Loggable {
     public function getMessage(): string;
