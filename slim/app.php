@@ -1,4 +1,5 @@
 <?php
+use Electro\Middleware\JWTRequiredMiddleware;
 require_once("vendor/autoload.php");
 
 use Slim\Factory\AppFactory;
@@ -28,6 +29,10 @@ $app->group("/api", function(RouteCollectorProxy $group) {
     $group->post("/bills", BillController::class . ":add");
     $group->put("/bills[/{id}]", BillController::class .":update");
     $group->delete("/bills/{id}", BillController::class . ":delete");
-});
+})->add(
+    new JWTRequiredMiddleware(
+        $app->getContainer()->get("database")->table(LoginController::$table_name)
+    )
+);
 
 $app->run();
