@@ -1,45 +1,29 @@
 <?php
-namespace Electro\middleware;
+namespace Electro\Middleware;
 
 use Psr\Http\Message\RequestInterface as Request;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Container\ContainerInterface as Container;
-use Electro\exceptions\AuthorizationException;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Csrf\Guard as CSRFGuard;
+use Slim\Exception\HttpUnauthorizedException;
 
 class CSRFTokenMiddleware {
-	protected $container;
+	protected ResponseFactoryInterface $response_factory;
 
-	public function __construct(Container $container) {
-		$this->container = $container;
-	}
+	public function __construct(protected CSRFGuard $guard) {}
 
-	public function __invoke(Request $request, Response $response, callable $next): Response {
-		if ($this->isMutatingMethod($request->getMethod())) {
-			$csrf_token = $request->getHeader("X-XSRF-TOKEN"); // returns an array with header values
-			$csrf_secret = $this->container->session->getCsrfToken();
-			if (empty($csrf_token) || !$csrf_secret->isValid($csrf_token[0])) { // match token against secret
-				throw new AuthorizationException();
-			}
-		}
-		$response = $next($request, $response);
-		setcookie(
-			$name = $_ENV["XSRF_COOKIE"], 
-			$value = $this->container->session->getCsrfToken()->getValue(), 
-			$expire = time() + $_ENV["SESSION_LIFETIME"] * 60, 
-			$path = "/", 
-			$domain = "", 
-			$secure = $_ENV["APP_ENV"] === "production", 
-			$httponly = true
-		);
-		return $response;
-	}
+	public function __invoke(Request $request, RequestHandlerInterface $handler): Response {
+        if ($request->getMethod() !== "GET") {
+            $token = $request->getHeaderLine("X-CSRF-TOKEN");
+            if (!$token) throw new HttpUnauthorizedException($request, "Missing CSRF Token");
 
-	private function isMutatingMethod($method):bool {
-		switch($method) {
-			case "POST":
-			case "PUT":
-			case "DELETE": return true;
-			default: return false;
-		}
-	}
+            // The token has token name and token value separated by a dot
+            $csrf_data = explode(".", $token);
+            $is_valid = $this->guard->validateToken($csrf_data[0], $csrf_data[1]);
+            if (!$is_valid) throw new HttpUnauthorizedException($request, "Invalid CSRF Token");
+        }
+
+        return $handler->handle($request);
+    }
 }

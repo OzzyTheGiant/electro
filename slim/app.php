@@ -1,5 +1,4 @@
 <?php
-use Electro\Middleware\JWTRequiredMiddleware;
 require_once("vendor/autoload.php");
 
 use Slim\Factory\AppFactory;
@@ -9,20 +8,29 @@ use Dotenv\Dotenv;
 use Electro\Config\DependencyManager;
 use Electro\Controllers\BillController;
 use Electro\Controllers\LoginController;
-// use Electro\middleware\CSRFTokenMiddleware;
+use Electro\Middleware\JWTRequiredMiddleware;
 
 // load environment variables from .env
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-$app = AppFactory::create(new ResponseFactory(), DependencyManager::bootstrapDependencies());
+// For CSRF cookie
+session_name($_ENV["JWT_CSRF_COOKIE_NAME"]);
+session_start();
+
+$response_factory = new ResponseFactory();
+
+$app = AppFactory::create(
+    $response_factory, 
+    DependencyManager::bootstrapDependencies($response_factory)
+);
+
 $app->addBodyParsingMiddleware();
+DependencyManager::setUpMiddleware($app);
 DependencyManager::setUpErrorHandler($app);
 
-// $app->add(new CSRFTokenMiddleware($container));
-
 $app->group("/api", function(RouteCollectorProxy $group) {
-	$group->get("/", LoginController::class . ":home");
+	$group->get("", LoginController::class . ":home");
     $group->post("/login", LoginController::class . ":login");
 	$group->post("/logout", LoginController::class . ":logout");
     $group->get("/bills", BillController::class . ":fetchAll");

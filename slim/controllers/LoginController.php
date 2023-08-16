@@ -1,6 +1,7 @@
 <?php
 namespace Electro\Controllers;
 
+use DateInterval;
 use \DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Illuminate\Database\Query\Builder;
@@ -8,6 +9,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpUnauthorizedException;
 use Slim\Psr7\Cookies;
+use Slim\Csrf\Guard as CSRFGuard;
 use \stdClass;
 
 class LoginController {
@@ -16,7 +18,7 @@ class LoginController {
     protected Cookies $cookie_manager;
     protected string | null $jwt = null;
 
-	public function __construct(protected Builder $table) {
+	public function __construct(protected Builder $table, protected CSRFGuard $csrf) {
         $this->jwt_cookie_name = $_ENV["JWT_ACCESS_COOKIE_NAME"];
         $this->cookie_manager = new Cookies;
         $this->cookie_manager->setDefaults([
@@ -27,7 +29,20 @@ class LoginController {
     }
 
 	public function home(Request $request, Response $response): Response {
-		return $response->withStatus(204);
+        $csrf = $this->csrf;
+        $name_key = $csrf->getTokenNameKey(); $value_key = $csrf->getTokenValueKey();
+        $key_pair = $this->csrf->generateToken();
+        $interval = new DateInterval("PT" . $_ENV["JWT_ACCESS_TOKEN_EXPIRES"] . "H");
+
+        $this->cookie_manager->set($_ENV["JWT_CSRF_COOKIE_NAME"], [
+            "value" => $key_pair[$name_key] . "." . $key_pair[$value_key],
+            "httponly" => false,
+            "expires" => (new DateTimeImmutable())->add($interval)->format("r")
+        ]);
+		
+        return $response
+            ->withStatus(204)
+            ->withHeader("Set-Cookie", $this->cookie_manager->toHeaders());
 	}
 
 	public function login(Request $request, Response $response): Response {

@@ -5,23 +5,29 @@ use DI\Container;
 use Electro\Controllers\BillController;
 use Electro\Controllers\LoginController;
 use Electro\Exceptions\Loggable;
+use Electro\Middleware\CSRFTokenMiddleware;
+use Illuminate\Container\Container as DBContainer;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container as DBContainer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface as Request;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\App;
+use Slim\Csrf\Guard as CSRFGuard;
 use Slim\Exception\HttpSpecializedException;
 use Throwable;
 
 class DependencyManager {
-    public static function bootstrapDependencies(): ContainerInterface {
+    public static function bootstrapDependencies(
+        ResponseFactoryInterface $response_factory
+    ): ContainerInterface {
         $container = new Container();
         $container->set("settings", require_once("settings.php"));
         $container->set("logger", self::createLogger());
         $container->set("database", self::createDatabase($container));
+        $container->set("csrf", new CSRFGuard($response_factory, persistentTokenMode: true));
         $container->set(BillController::class, self::createBillController($container));
         $container->set(LoginController::class, self::createLoginController($container));
         return $container;
@@ -54,6 +60,10 @@ class DependencyManager {
             ->setDefaultErrorHandler($error_callback);
     }
 
+    public static function setUpMiddleware(App $app): void {
+        $app->add(new CSRFTokenMiddleware($app->getContainer()->get("csrf")));
+    }
+
     private static function createDatabase(ContainerInterface $container): Capsule {
         $config = $container->get("settings")["db"];
         $database = new Capsule;
@@ -72,7 +82,10 @@ class DependencyManager {
     }
 
     private static function createLoginController(ContainerInterface $container): LoginController {
-        return new LoginController($container->get("database")->table(LoginController::$table_name));
+        return new LoginController(
+            $container->get("database")->table(LoginController::$table_name),
+            $container->get("csrf")
+        );
     }
     
     private static function createBillController(ContainerInterface $container): BillController {
