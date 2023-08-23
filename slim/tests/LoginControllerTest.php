@@ -1,100 +1,130 @@
 <?php
-namespace Electro\tests;
+namespace Electro\Tests;
 
+use Dotenv\Dotenv;
+use Electro\Controllers\LoginController;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
+use PDO;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Http\Environment;
-use Aura\Session;
-use Electro\controllers\LoginController;
-use Electro\models\User\UserRow;
-use Electro\exceptions\AuthenticationException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Csrf\Guard as CSRFGuard;
+use Slim\Exception\HttpUnauthorizedException;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\Factory\UriFactory;
+use Slim\Psr7\Response;
+use stdClass;
 
 class LoginControllerTest extends TestCase {
-	protected $data;
-	protected $container;
-	protected $controller;
-	protected $request;
-	protected $response;
-	protected $session_segment;
-	protected $user;
+	protected array $data;
+	protected LoginController $controller;
+	protected ServerRequestInterface $request;
+	protected ResponseInterface $response;
+	protected stdClass $user;
+	protected Builder|MockObject $table;
+    protected CSRFGuard|MockObject $guard;
 
 	protected $json_data = ["username" => "OzzyTheGiant", "password" => 'notarealpassword'];
 
-	public function login_DataProvider(): array {
+	public static function data_provider(): array {
 		return [
 			["Ozzy", "notarealpassword"],
-			["OzzyTheGiant", "wrongpassword"]
+			["OzzyTheGiant", "wrong_password"]
 		];
 	}
 
 	protected function setUp(): void {
-		// create app container
-		$this->container = new Container();
+        Dotenv::createImmutable(__DIR__ . "/../")->load();
 
-		// derive a fake, mocked atlas TableLocator from stdClass so we can quickly call methods without worrying about type matching
-		$this->container["atlas"] = $this->getMockBuilder(stdClass::class)
-			->setMethods(["get", "select", "where", "fetchRow"])
+        $this->user = new stdClass;
+        $this->user->id = 1;
+        $this->user->username = "OzzyTheGiant";
+        $this->user->password = '$argon2id$v=19$m=65536,t=3,p=4$ZeYABY+RVIf42Dx31DVhwg$Q4JkBb+fAIuFRq0ZN4b3GnP05U6Nw7XQWDTkBR2rtyk';
+        
+		$connection = $this->getMockBuilder(Connection::class)
+            ->setConstructorArgs([new PDO("sqlite::memory:")])
+            ->getMock();
+
+		$this->table = $this->getMockBuilder(Builder::class)
+            ->setConstructorArgs([$connection])
+			->onlyMethods(["where", "first"])
 			->getMock();
+            
+        $response_factory = new ResponseFactory;
+        $storage = [];
 
-		// mock session
-		$this->container["session"] = $this->getMockBuilder(Session::class)
-			->setMethods(["regenerateId", "getSegment"])->getMock();
+        $this->guard = $this->getMockBuilder(CSRFGuard::class)
+            ->setConstructorArgs([$response_factory, "csrf", &$storage])
+            ->onlyMethods(["getTokenNameKey", "getTokenValueKey", "generateToken"])
+            ->getMock();
 
-		// mock session segment
-		$this->session_segment = $this->getMockBuilder(Segment::class)
-			->setMethods(["set"])->getMock();
+		$this->controller = new LoginController($this->table, $this->guard);
 
-		// create controller with provided container
-		$this->controller = new LoginController($this->container);
+		$request_factory = new ServerRequestFactory();
+        $uri_factory = new UriFactory();
 
-		// create user
-		$this->user = new UserRow();
-		$this->user->ID = 1; $this->user->Username = "OzzyTheGiant"; 
-		$this->user->Password = '$2a$10$Cj66BNdUZhkMvStI5jfQoetgzSvkaQIwJuIRDPIa1zgFsFPXkbqr2';
+		$this->request = $request_factory->createServerRequest(
+            "GET", $uri_factory->createUri("/api/login")
+        );
 
-		// set up request and response with mocked environment
-		$this->request = Request::createFromEnvironment(Environment::mock());
 		$this->response = new Response();
 	}
 
-	public function test_login_ValidatesCredentialsAndStartsSession() {
-		// set up method calls
-		$this->request = $this->request->withMethod("POST");
-		$this->request = $this->request->withParsedBody($this->json_data);
-		$this->container->atlas->expects($this->once())->method("get")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("select")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("where")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("fetchRow")->will($this->returnValue($this->user));
-		$this->container->session->expects($this->once())->method("getSegment")->will($this->returnValue($this->session_segment));
-		$this->session_segment->expects($this->once())->method("set");
-		// perform method and assert
-		$response = $this->controller->login($this->request, $this->response);
-		$user = json_decode($response->getBody(), true);
-		$this->assertSame($this->user->ID, $user["ID"]);
-		$this->assertSame($this->user->Username, $user["Username"]);
-		$this->assertSame(200, $response->getStatusCode());
+    public function test_csrf_cookie_provided_on_home_route() {
+        $this->guard->expects($this->once())->method("getTokenNameKey")->willReturn("name_key");
+        $this->guard->expects($this->once())->method("getTokenValueKey")->willReturn("value_key");
+		$this->guard->expects($this->once())->method("generateToken")->willReturn([
+            "name_key" => "csrf",
+            "value_key" => "12345678"
+        ]);
+
+		$response = $this->controller->home($this->request, $this->response);
+
+		$this->assertSame(204, $response->getStatusCode());
+        $this->assertStringContainsString(
+            $_ENV["JWT_CSRF_COOKIE_NAME"], 
+            $response->getHeader("Set-Cookie")[0]
+        );
 	}
 
-	/** @dataProvider login_DataProvider */
-	public function test_login_ThrowsAuthenticationErrorIfCredentialsNotValid($username, $password) {
+	public function test_login_validates_credentials_and_returns_jwt_token() {
 		// set up method calls
-		$this->request = $this->request->withParsedBody(["username" => $username, "password" => $password]);
-		$this->container->atlas->expects($this->once())->method("get")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("select")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("where")->will($this->returnSelf());
-		$this->container->atlas->expects($this->once())->method("fetchRow")->will($this->returnValue(null));
-		// perform method and assert
-		$this->expectException(AuthenticationException::class);
+		$this->request = $this->request->withMethod("POST")->withParsedBody($this->json_data);
+		$this->table->expects($this->once())->method("where")->willReturnSelf();
+		$this->table->expects($this->once())->method("first")->willReturn($this->user);
+
+		$response = $this->controller->login($this->request, $this->response);
+        $cookie = $response->getHeader("Set-Cookie");
+		$user = json_decode($response->getBody(), true);
+
+		$this->assertSame(200, $response->getStatusCode());
+        $this->assertStringContainsString($_ENV["JWT_ACCESS_COOKIE_NAME"], $cookie[0]);
+        $this->assertFalse(!empty($user["password"]));
+		$this->assertSame($this->user->id, $user["id"]);
+		$this->assertSame($this->user->username, $user["username"]);
+	}
+
+	#[DataProvider("data_provider")]
+	public function test_login_throws_exception_if_credentials_are_invalid($username, $password) {
+        $credentials = ["username" => $username, "password" => $password];
+		$this->request = $this->request->withParsedBody($credentials);
+		$this->table->expects($this->once())->method("where")->willReturnSelf();
+		$this->table->expects($this->once())->method("first")->willReturn(null);
+		$this->expectException(HttpUnauthorizedException::class);
 		$this->controller->login($this->request, $this->response);
 	}
 
-	public function test_logout_EndsSessionAndReturnsNoContent() {
-		// set up method calls
-		$this->container->session->expects($this->once())->method("regenerateId");
-		// perform method and assert
+	public function test_logout_destroys_jwt_cookie() {
 		$response = $this->controller->logout($this->request, $this->response);
+
 		$this->assertSame(204, $response->getStatusCode());
+        $this->assertStringContainsString(
+            $_ENV["JWT_ACCESS_COOKIE_NAME"], 
+            $response->getHeader("Set-Cookie")[0]
+        );
 	}
 }

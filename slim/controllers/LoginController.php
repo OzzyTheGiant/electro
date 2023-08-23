@@ -31,7 +31,7 @@ class LoginController {
 	public function home(Request $request, Response $response): Response {
         $csrf = $this->csrf;
         $name_key = $csrf->getTokenNameKey(); $value_key = $csrf->getTokenValueKey();
-        $key_pair = $this->csrf->generateToken();
+        $key_pair = $csrf->generateToken();
         $interval = new DateInterval("PT" . $_ENV["JWT_ACCESS_TOKEN_EXPIRES"] . "H");
 
         $this->cookie_manager->set($_ENV["JWT_CSRF_COOKIE_NAME"], [

@@ -14,8 +14,7 @@ class BillController {
     public static string $table_name = "bills";
 
 	public function __construct(
-        protected Builder $table,
-        protected string $entity_name = "",
+        protected Builder $table
     ) {}
 
 	public function fetchAll(Request $request, Response $response): Response {

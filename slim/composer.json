@@ -48,6 +48,6 @@
     "minimum-stability": "dev",
 	"prefer-stable": true,
 	"scripts": {
-		"test":"./vendor/bin/phpunit --bootstrap vendor/autoload.php slim/tests"
+		"test":"./vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
     }
 }
