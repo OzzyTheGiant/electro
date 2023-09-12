@@ -31,6 +31,7 @@
         ],
         "python.linting.pylintEnabled": false,
         "python.linting.lintOnSave": true,
-        "python.linting.flake8Enabled": true
+        "python.linting.flake8Enabled": true,
+        "php.version": "8.2.10"
     }
 }

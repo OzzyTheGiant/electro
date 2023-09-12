@@ -2,68 +2,29 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that are not reported.
+     * The list of the inputs that are never flashed to the session on validation exceptions.
      *
-     * @var array
-     */
-    protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
-		\Illuminate\Auth\Access\AuthorizationException::class,
-		\Symfony\Component\HttpKernel\Exception\HttpException::class,
-		\Illuminate\Database\Eloquent\ModelNotFoundException::class,
-		\Illuminate\Validation\ValidationException::class
-    ];
-
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
+     * @var array<int, string>
      */
     protected $dontFlash = [
+        'current_password',
         'password',
         'password_confirmation',
     ];
 
     /**
-     * Report or log an exception.
-     *
-     * @param  \Exception  $exception
-     * @return void
+     * Register the exception handling callbacks for the application.
      */
-    public function report(Exception $exception)
+    public function register(): void
     {
-        parent::report($exception);
+        $this->reportable(function (Throwable $e) {
+            //
+        });
     }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Exception $e)
-    {
-		if ($response = $this->createUserMessage($e)) {
-			return $response;
-		} return parent::render($request, $e);
-	}
-	
-	public function createUserMessage(Exception $e) {
-		if ($e instanceof ModelNotFoundException) {
-			return response()->json(["message" => "The specified item was not found"], 404);
-		} else if ($e instanceof QueryException) {
-			return response()->json(["message" => "Something went wrong while querying the database"], 400);
-		} else if ($e instanceof ValidationException) {
-			return response()->json(["message" => $e->getMessage()], 400);
-		}
-	}
 }
