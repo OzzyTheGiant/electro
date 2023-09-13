@@ -18,7 +18,7 @@ class JWTServiceProvider extends LaravelServiceProvider {
             new QueryString,
             new InputSource,
             new RouteParams,
-            (new Cookies(config('jwt.decrypt_cookies')))
+            (new Cookies(false))
                 ->setKey(env("JWT_ACCESS_COOKIE_NAME"))
         ]);
 

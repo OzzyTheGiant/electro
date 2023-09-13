@@ -11,6 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class BillController extends Controller {
     public function __construct() {
         $this->middleware("auth:api");
+        $this->middleware("web");
     }
 
     public function index(): AnonymousResourceCollection {

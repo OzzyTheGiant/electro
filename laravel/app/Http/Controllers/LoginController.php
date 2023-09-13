@@ -13,7 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller {
     public function __construct() {
-        $this->middleware("auth:api", ["except" => ["login"]]);
+        $this->middleware("auth:api", ["except" => ["home", "login"]]);
+        $this->middleware("web");
+    }
+
+    /** This method is purely to send back a CSRF Token */
+    public function home(Request $request): Response {
+        return response("", 204);
     }
 
     public function login(Request $request): Response {
@@ -27,14 +33,11 @@ class LoginController extends Controller {
         if ($token) {
             $minutes = env("JWT_ACCESS_TOKEN_EXPIRES");
             $response = (new UserResource(Auth::user()))->response();
-            $response = $response->cookie(new Cookie(
+            $response = $response->withCookie(cookie(
                 env("JWT_ACCESS_COOKIE_NAME"),
                 $token,
-                (new DateTimeImmutable())->modify("+$minutes minutes"),
-                null,
-                null,
-                false,
-                true
+                $minutes,
+                httpOnly: true
             ));
 
             return $response;

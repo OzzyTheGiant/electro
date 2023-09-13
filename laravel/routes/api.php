@@ -16,6 +16,7 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::controller(LoginController::class)->group(function () {
+    Route::get('home', 'home');
     Route::post('login', 'login');
     Route::get('user', 'getCurrentUser');
     Route::post('logout', 'logout');
