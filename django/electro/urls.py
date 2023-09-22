@@ -18,17 +18,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from electro import views
+from electro.views import BillViewSet, LoginView, LogoutView, home
 from electro.exceptions import url_not_found_error_handler
 
 router = DefaultRouter(trailing_slash=False)
-router.register(r"bills", views.BillViewSet)
+router.register(r"bills", BillViewSet)
 
 urlpatterns = [
     path("admin", admin.site.urls),
-    path("api", views.home),
-    path("api/login", views.LoginView.as_view()),
-    path("api/logout", views.LogoutView.as_view()),
+    path("api", home),
+    path("api/login", LoginView.as_view()),
+    path("api/logout", LogoutView.as_view()),
     path("api/", include(router.urls)),
 ]
 

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os, sys, logging
+from datetime import timedelta
 from pathlib import Path
 
 environment = os.environ["APP_ENV"]
@@ -111,14 +112,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Password Hashers
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
-    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
-    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
-    "django.contrib.auth.hashers.ScryptPasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher"
 ]
 
 AUTH_USER_MODEL = "electro.User"
-AUTHENTICATION_BACKENDS = ["django_app.application.authentication.APIBackend"]
+AUTHENTICATION_BACKENDS = ["electro.authentication.APIBackend"]
+
+# JWT
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes = int(os.environ["JWT_ACCESS_TOKEN_EXPIRES"]) * 60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes = int(os.environ["JWT_ACCESS_TOKEN_EXPIRES"]) * 60)
+}
 
 # Sessions
 
@@ -175,8 +180,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "electro.exceptions.global_exception_handler",
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.SessionAuthentication"
-    ],
+        "electro.authentication.CookieBasedJWTAuthentication"
+    ]
 }
 
 # Logging
@@ -216,7 +221,7 @@ LOGGING = {
             "level": "INFO",
             "propagate": False,  # prevent duplicate log records
         },
-        "django_app.application.exceptions": {
+        "electro.exceptions": {
             "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": False,
