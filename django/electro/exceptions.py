@@ -1,10 +1,12 @@
 """App exception classes and custom exception handler"""
 import logging
+from typing import cast
 from django.http import JsonResponse
 from rest_framework.views import exception_handler
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, ValidationError
 from rest_framework.status import HTTP_404_NOT_FOUND
+from rest_framework.utils.serializer_helpers import ReturnDict
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +24,9 @@ def global_exception_handler(exception, context):
         if isinstance(exception, ValidationError):
             response.data["message"] = _craft_validation_error_message(exception)
         elif isinstance(exception, APIException):
-            response.data["message"] = exception.detail
+            if "detail" in exception.detail:
+                response.data["message"] = cast(ReturnDict, exception.detail)["detail"]
+            else: response.data["message"] = str(exception.detail)
         elif isinstance(exception.args[0], int):
             logger.error(
                 "Error Code - " + str(exception.args[0]) + ": " + exception.args[1]

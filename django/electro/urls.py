@@ -26,7 +26,7 @@ router.register(r"bills", BillViewSet)
 
 urlpatterns = [
     path("admin", admin.site.urls),
-    path("api", home),
+    path("api/home", home),
     path("api/login", LoginView.as_view()),
     path("api/logout", LogoutView.as_view()),
     path("api/", include(router.urls)),

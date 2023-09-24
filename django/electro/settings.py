@@ -137,7 +137,7 @@ SESSION_COOKIE_SECURE = environment != "development"
 # CSRF
 # Note: When using CSRF sessions, use ensure_csrf_cookie since the only other way to
 # get token is by rendering it into an html template
-CSRF_USE_SESSIONS = True
+CSRF_USE_SESSIONS = False
 # the following setting is for the csrf token cookie when CSRF_USE_SESSIONS = False,
 # however, if using sessions, use your own custom middleware to set the cookie, as
 # ensure_csrf_cookie only puts out session cookie,
@@ -145,10 +145,11 @@ CSRF_USE_SESSIONS = True
 CSRF_COOKIE_NAME = os.environ["JWT_CSRF_COOKIE_NAME"]
 # Make sure the token header is written like this here in the settings, otherwise,
 # django won't find the token
-CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
+CSRF_HEADER_NAME = "HTTP_X_CSRF_TOKEN"
 CSRF_COOKIE_SECURE = environment != "local"
 CSRF_COOKIE_AGE = int(os.environ["JWT_ACCESS_TOKEN_EXPIRES"]) * 60
 CSRF_TOKEN_HTTPONLY = False
+CSRF_FAILURE_VIEW = "electro.views.csrf_failure"
 
 
 # Internationalization

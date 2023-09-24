@@ -21,6 +21,7 @@ class APIBackend:
             return None
         return user
 
+
     def get_user(self, user_id):
         try:
             return User.objects.get(pk = user_id)
@@ -36,7 +37,6 @@ class CookieBasedJWTAuthentication(JWTStatelessUserAuthentication):
         if raw_token is None: return None
         validated_token = self.get_validated_token(raw_token)
 
-        print(raw_token, validated_token, self.get_user(validated_token))
         return self.get_user(validated_token), validated_token
 
 
