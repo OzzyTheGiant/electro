@@ -7,7 +7,7 @@ class User(AbstractBaseUser):
     """Model for database table Users. implements only password and last_login fields as well as
     a few methods"""
 
-    id = models.IntegerField(primary_key = True)
+    id = models.AutoField(primary_key = True)
     username = models.CharField(max_length = 30, unique = True)
     password = models.CharField(max_length = 255)
 

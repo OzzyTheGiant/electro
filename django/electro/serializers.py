@@ -17,3 +17,9 @@ class BillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill
         fields = ("id", "user_id", "payment_amount", "payment_date")
+
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["payment_amount"] = float(data["payment_amount"])
+        return data
