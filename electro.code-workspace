@@ -1,12 +1,12 @@
 {
 	"folders": [
         {
-            "name": "django",
-            "path": "django"
+            "name": "echo",
+            "path": "echo"
         },
         {
-            "name": "express",
-            "path": "express"
+            "name": "django",
+            "path": "django"
         },
         {
             "name": "flask",
@@ -21,11 +21,12 @@
             "path": "slim"
         },
         {
-            "name": "vue",
-            "path": "vue"
+            "name": "express",
+            "path": "express"
         },
         {
-            "path": "echo"
+            "name": "vue",
+            "path": "vue"
         }
     ],
     "settings": {
