@@ -10,7 +10,7 @@ func (dao *DBAccessObject) SelectUserByUsername(username string, user *models.Us
 
 	if err := result.Error; err != nil {
 		dao.logger.Error(err.Error())
-		return errors.New("Server Error: Could not fetch user data")
+		return errors.New("[Server Error]: Could not fetch user data")
 	}
 
 	return nil
@@ -21,7 +21,7 @@ func (dao *DBAccessObject) SelectAllUsers(users *[]models.User) (err error) {
 
 	if err := result.Error; err != nil {
 		dao.logger.Error(err.Error())
-		return errors.New("Server Error: Could not fetch user data")
+		return errors.New("[Server Error]: Could not fetch user data")
 	}
 
 	return

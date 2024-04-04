@@ -29,7 +29,7 @@ func (user *User) HashPassword() (err error) {
 	hash, err := argon2id.CreateHash(*user.Password, argon2id.DefaultParams)
 
 	if err != nil {
-		return errors.New("Server Error: Unable to encrypt password")
+		return errors.New("[Server Error]: Unable to encrypt password")
 	}
 
 	user.Password = &hash

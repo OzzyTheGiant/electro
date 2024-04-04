@@ -11,7 +11,7 @@ import (
 
 const BILL_URL = "/bills"
 
-func fetchBills(context echo.Context) error {
+func FetchBills(context echo.Context) error {
 	var bills = []models.Bill{}
 
 	dao := context.Get("dao").(*db.DBAccessObject)
@@ -24,7 +24,7 @@ func fetchBills(context echo.Context) error {
 	return context.JSON(http.StatusOK, bills)
 }
 
-func createBill(context echo.Context) error {
+func CreateBill(context echo.Context) error {
 	var bills models.Bill
 	var err error
 
@@ -41,7 +41,7 @@ func createBill(context echo.Context) error {
 	return context.JSON(http.StatusCreated, bills)
 }
 
-func updateBills(context echo.Context) error {
+func UpdateBill(context echo.Context) error {
 	var bill models.Bill
 	var err error
 
@@ -61,7 +61,7 @@ func updateBills(context echo.Context) error {
 	return context.JSON(http.StatusOK, bill)
 }
 
-func deleteBill(context echo.Context) error {
+func DeleteBill(context echo.Context) error {
 	idList, err := createParamListFromString(context.Param("id"))
 
 	if err != nil {

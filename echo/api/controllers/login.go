@@ -17,7 +17,7 @@ type Credentials struct {
 	Password string `json:"password"`
 }
 
-func login(context echo.Context) (err error) {
+func Login(context echo.Context) (err error) {
 	var credentials Credentials
 	var user models.User
 
@@ -68,7 +68,7 @@ func login(context echo.Context) (err error) {
 	return context.JSON(http.StatusOK, &user)
 }
 
-func logout(context echo.Context) error {
+func Logout(context echo.Context) error {
 	deleteCookie(context, os.Getenv("JWT_ACCESS_COOKIE_NAME"))
 	return context.NoContent(http.StatusNoContent)
 }

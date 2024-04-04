@@ -10,7 +10,7 @@ func (dao *DBAccessObject) SelectBills(bills *[]models.Bill) (err error) {
 
 	if err := result.Error; err != nil {
 		dao.logger.Error(err.Error())
-		return errors.New("Server Error: Could not fetch bill data")
+		return errors.New("[Server Error]: Could not fetch bill data")
 	}
 
 	return
@@ -19,7 +19,7 @@ func (dao *DBAccessObject) SelectBills(bills *[]models.Bill) (err error) {
 func (dao *DBAccessObject) InsertBill(bills *models.Bill) (err error) {
 	if err = dao.db.Create(&bills).Error; err != nil {
 		dao.logger.Error(err.Error())
-		return errors.New("Server Error: Could not create bill")
+		return errors.New("[Server Error]: Could not create bill")
 	}
 
 	return
@@ -32,7 +32,7 @@ func (dao *DBAccessObject) UpdateBill(bills *models.Bill) (rowCount int64, err e
 
 	if err = result.Error; err != nil || rowCount == 0 {
 		dao.logger.Error(err.Error())
-		return rowCount, errors.New("Server Error: Could not update bill")
+		return rowCount, errors.New("[Server Error]: Could not update bill")
 	}
 
 	return
@@ -44,7 +44,7 @@ func (dao *DBAccessObject) DeleteBill(idList []int64) (rowsAffected int64, err e
 
 	if err = result.Error; err != nil {
 		dao.logger.Error(err.Error())
-		return rowsAffected, errors.New("Server Error: Could not delete bills")
+		return rowsAffected, errors.New("[Server Error]: Could not delete bills")
 	}
 
 	return

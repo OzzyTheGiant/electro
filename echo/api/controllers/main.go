@@ -13,12 +13,12 @@ import (
 
 func RegisterAppRoutes(BASE_URL string, e *echo.Echo) {
 	e.GET(BASE_URL+"/home", home)
-	e.POST(BASE_URL+"/login", login)
-	e.POST(BASE_URL+"/logout", logout)
-	e.GET(BASE_URL+BILL_URL, fetchBills)
-	e.POST(BASE_URL+BILL_URL, createBill)
-	e.PUT(BASE_URL+BILL_URL, updateBills)
-	e.DELETE(BASE_URL+BILL_URL+"/:id", deleteBill)
+	e.POST(BASE_URL+"/login", Login)
+	e.POST(BASE_URL+"/logout", Logout)
+	e.GET(BASE_URL+BILL_URL, FetchBills)
+	e.POST(BASE_URL+BILL_URL, CreateBill)
+	e.PUT(BASE_URL+BILL_URL, UpdateBill)
+	e.DELETE(BASE_URL+BILL_URL+"/:id", DeleteBill)
 }
 
 func home(context echo.Context) error {
@@ -27,7 +27,7 @@ func home(context echo.Context) error {
 
 func createParamListFromString(paramString string) ([]int64, error) {
 	idList := []int64{}
-	errMessage := errors.New("The specified tax return's ID is invalid")
+	errMessage := errors.New("the specified tax return's ID is invalid")
 
 	if strings.Contains(paramString, "-") {
 		params := strings.Split(paramString, "-")

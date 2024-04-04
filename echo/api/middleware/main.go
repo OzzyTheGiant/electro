@@ -3,7 +3,6 @@ package middleware
 import (
 	"electro/api/database"
 	s "electro/api/services"
-	"errors"
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
@@ -17,32 +16,47 @@ type AppContext struct {
 	echo.Context
 }
 
-func RegisterServicesAndMiddleware(e *echo.Echo) {
-	logger := s.InitLogger()
-	services := &map[string]interface{}{
+type ServiceMap = *map[string]interface{}
+
+func RegisterServicesAndMiddleware(e *echo.Echo) (services ServiceMap, logger *log.Logger) {
+	logger = s.InitLogger()
+	services = &map[string]interface{}{
 		"dao":       database.InitService(logger),
 		"validator": validator.New(validator.WithRequiredStructEnabled()),
 	}
 
-	e.Use(createCustomContext(services, logger))
+	e.Use(customContextMiddleware(services, logger))
 	e.Use(loggerMiddleware(true))
 	e.Use(middleware.Recover())
 	e.Use(csrfMiddleware())
 	e.Use(jwtValidationMiddleware())
 	e.Use(jwtAuthenticationMiddleware)
+
+	return
 }
 
-func createCustomContext(services *map[string]interface{}, logger *log.Logger) echo.MiddlewareFunc {
+func CreateCustomContext(
+	context echo.Context,
+	services *map[string]interface{},
+	logger *log.Logger,
+) *AppContext {
+	appContext := &AppContext{context}
+	appContext.SetLogger(logger)
+
+	for key, value := range *services {
+		appContext.Set(key, value)
+	}
+
+	return appContext
+}
+
+func customContextMiddleware(
+	services *map[string]interface{},
+	logger *log.Logger,
+) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(context echo.Context) error {
-			appContext := &AppContext{context}
-			appContext.SetLogger(logger)
-
-			for key, value := range *services {
-				appContext.Set(key, value)
-			}
-
-			return next(appContext)
+			return next(CreateCustomContext(context, services, logger))
 		}
 	}
 }
@@ -63,9 +77,9 @@ func (context *AppContext) BindAndValidate(model interface{}) (err error) {
 
 	validationErrors := err.(validator.ValidationErrors)
 
-	return errors.New(fmt.Sprintf(
-		`Validation Error: %s field failed the "%s" rule`,
+	return fmt.Errorf(
+		`[Validation Error]: %s field failed the "%s" rule`,
 		validationErrors[0].StructField(),
 		validationErrors[0].Tag(),
-	))
+	)
 }
